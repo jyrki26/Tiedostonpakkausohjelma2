@@ -66,6 +66,10 @@ public class AppUi {
         huffman.StartHuffman();
     }
     
+    /**
+     * Metodi k‰ynnist‰‰ Huffmanin algoritmilla pakatun tiedoston purkamisen.
+     *
+     */
     void decompressHuffman(){
         System.out.println("Anna purettavan tiedoston osoite niin, ett‰ \\-merkin tilalla on /-merkki ");
         file = new File(scanner.nextLine());

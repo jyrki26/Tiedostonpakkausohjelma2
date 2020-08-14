@@ -45,8 +45,7 @@ public class Huffman {
         CreateTree();
         CreateCode(first, "");
         compress();
-        System.out.println(divideToBytes());
-        System.out.println(decompressor);
+        divideToBytes();
     }
 
     void BuildHashMap() {
@@ -57,7 +56,6 @@ public class Huffman {
                 values.put(text.charAt(i), values.get(text.charAt(i)) + 1);
             }
         }
-        System.out.println(values);
     }
 
     void CreateTree() {
@@ -85,7 +83,6 @@ public class Huffman {
             decompressor += "1" + Character.toString(node.getCharacter());
         }
         if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '-') {
-            System.out.println(node.getCharacter() + "   |  " + s);
             codes.put(node.getCharacter(), s);
             return;
         }
@@ -102,8 +99,6 @@ public class Huffman {
             s = codes.get(text.charAt(i));
             code += s;
         }
-        
-        System.out.println(code);
     }
     
     public String divideToBytes() throws IOException{
