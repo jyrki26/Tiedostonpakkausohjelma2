@@ -15,5 +15,5 @@ Perehdyin erityisesti eri Lempel-Zivin ja Shannon-Fanon algoritmeihin.
 Jo edellä mainittu pakatun tiedoston purkaminen. Bittimuotoisen esityksen muuttaminen merkeiksi ja takaisin aiheutti aina jonkin virheen kunnes keksin jakaa algoritmin tuottaman merkkijonon seitsemän merkin mittaisiin paloihin ja lisäsin nollan aina kunkin palan alkuun ja poistin sen purettaessa.
 
 ### Mitä teen seuraavaksi?
-Teen omat tietorakenteet valmiiksi ja jos näyttää, että aikaa riittää, pyrin myös tekemään jonkin toisen algoritmin. Tällä hetkellä olen ajatellut lähinnä Shannon-Fanon -algoritmia, koska myös se toimii hyvin tekstimuotoisissa tiedostoissa ja luo siten hyvän vertailukohdan. <br\>
+Teen omat tietorakenteet valmiiksi ja jos näyttää, että aikaa riittää, pyrin myös tekemään jonkin toisen algoritmin. Tällä hetkellä olen ajatellut lähinnä Shannon-Fanon -algoritmia, koska myös se toimii hyvin tekstimuotoisissa tiedostoissa ja luo siten hyvän vertailukohdan. <br/>
 Lisäksi siistin koodin, pyrin yksinkertaistamaan koodia ja hoidan testauksen täysin ajan tasalle. Testaus oli paremmassa vaiheessa ennen kuin jouduin muokkaamaan algoritmia.
