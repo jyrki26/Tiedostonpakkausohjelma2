@@ -70,7 +70,7 @@ public class AppUi {
      * Metodi k‰ynnist‰‰ Huffmanin algoritmilla pakatun tiedoston purkamisen.
      *
      */
-    void decompressHuffman(){
+    void decompressHuffman() throws IOException{
         System.out.println("Anna purettavan tiedoston osoite niin, ett‰ \\-merkin tilalla on /-merkki ");
         file = new File(scanner.nextLine());
         filereader = new FileHandler(file);

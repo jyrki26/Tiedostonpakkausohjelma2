@@ -10,6 +10,7 @@ plugins {
 
 checkstyle {
     project.ext.checkstyleVersion = '8.20'
+    configFile = file("config/checkstyle/checkstyle.xml")
 }
 
 jacocoTestReport {
