@@ -99,6 +99,13 @@ public class DecompressHuffman {
         createCodes(node.getRight(), s + "1");
     }
 
+    /**
+     * Metodi muuntaa Huffman-koodin takaisin tavun mittaisiksi numerosarjoiksi.
+     *
+     * @param s Pakattu Huffman-koodi.
+     *
+     * @return Alkuperäinen koodi.
+     */
     public String convertToBytes(String s) {
         String bytes = bc.BinaryToString(s);
         String fixed = "";
@@ -114,7 +121,15 @@ public class DecompressHuffman {
 
         return fixed;
     }
-
+    
+    /**
+     * Metodi etsii puusta oikean merkin.
+     *
+     * @param node Ensimmäinen node.
+     * @param s Huffman-koodi.
+     * 
+     * @return Oikea merkki.
+     */
     public char findChar(Node node, String s) {
         Node n = node;
         for (int i = 0; i < s.length(); i++) {
@@ -126,7 +141,14 @@ public class DecompressHuffman {
         }
         return n.getCharacter();
     }
-
+    
+    /**
+     * Metodi pilkkoo koodin paloihin ja hakee oikean merkin metodin findChar avulla.
+     *
+     * @param text Alkuperäinen koodi.
+     * 
+     * @return Alkuperäinen teksti.
+     */
     public String recreateText(String text) {
         String full = "";
         String help = "";

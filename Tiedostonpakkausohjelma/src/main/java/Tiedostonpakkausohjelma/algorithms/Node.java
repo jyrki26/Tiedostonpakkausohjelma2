@@ -1,10 +1,13 @@
-
 package Tiedostonpakkausohjelma.algorithms;
 
 import java.util.Comparator;
 
-
+/**
+ * Luokka toteuttaa Huffman-noden, jota k‰ytet‰‰n bin‰‰rikeon muodostamiseen.
+ *
+ */
 public class Node {
+
     int number;
     char character;
     Node left;
@@ -45,7 +48,7 @@ public class Node {
     public Node getLeft() {
         return left;
     }
-    
+
     public Node getRight() {
         return right;
     }

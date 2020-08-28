@@ -3,9 +3,11 @@ package Tiedostonpakkausohjelma.algorithms;
 import Tiedostonpakkausohjelma.algorithms.Node.ImplementComparator;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryConverter;
+import Tiedostonpakkausohjelma.tools.BinaryHeap;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 
 public class Huffman {
 
@@ -18,7 +20,10 @@ public class Huffman {
     private String code;
     private BinaryConverter bc;
     private FileHandler filehandler;
+    private CharAmountsMap amounts;
     String decompressor = "";
+    private int charAmount;
+    private BinaryHeap heap;
 
     public Huffman(String text, FileHandler filehandler) {
         this.text = text;
@@ -37,15 +42,16 @@ public class Huffman {
      *
      */
     public void StartHuffman() throws IOException {
-        buildHashMap(text);
-        createNodes(values);
-        createTree(nodes);
+        amounts = buildHashMap(text);
+        heap = createNodes(amounts.keyset());
+        createTree(heap);
         createCode(first, "");
         compress();
         System.out.println(code);
         System.out.println(divideToBytes());
+        System.out.println("a " + (int)'a');
+        
     }
-
     /**
      * Metodi laskee pakattavassa tiedostossa olevan merkkien m‰‰r‰n ja
      * sijoittaa ne hajautustauluun.
@@ -54,45 +60,48 @@ public class Huffman {
      *
      * @return Hajautustaulu, jossa kirjaimien m‰‰r‰t on laskettu.
      */
-    public HashMap<Character, Integer> buildHashMap(String s) {
+    public CharAmountsMap buildHashMap(String s) {
+        CharAmountsMap map = new CharAmountsMap();
         for (int i = 0; i < text.length(); i++) {
-            if (!values.containsKey(text.charAt(i))) {
-                values.put(text.charAt(i), 1);
+            if (!map.containsChar(text.charAt(i))) {
+                map.addChar(new HashMapNode(text.charAt(i), 1));
             } else {
-                values.put(text.charAt(i), values.get(text.charAt(i)) + 1);
+                int value = map.getValue(text.charAt(i));
+                map.addChar(new HashMapNode(text.charAt(i), value + 1));
             }
         }
 
-        return values;
+        return map;
     }
 
     /**
      * Metodi muodostaa hajautustaulun tiedoista Nodet.
      *
-     * @param hm Hajautustaulu, jossa avaimena on merkki ja arvona merkkien
+     * @param chars Hajautustaulu, jossa avaimena on merkki ja arvona merkkien
      * m‰‰r‰ tekstiss‰.
      *
      * @return Prioriteettijono, jossa Nodet ovat.
      */
-    public PriorityQueue<Node> createNodes(HashMap<Character, Integer> hm) {
-        for (Character key : hm.keySet()) {
-            nodes.add(new Node(hm.get(key), key));
+    public BinaryHeap createNodes(char[] chars) {
+        charAmount = chars.length;
+        BinaryHeap bh = new BinaryHeap(new Node[charAmount * 2]);
+        for(int i = 0; i < chars.length; i++){
+            bh.insert(new Node(amounts.getValue(chars[i]), chars[i]));
         }
-        return nodes;
+        return bh;
     }
 
     /**
      * Metodi rakentaa Nodeista Huffman-puun.
      *
-     * @param pq Prioriteettijono, jossa Nodet ovat.
+     * @param bh Prioriteettijono, jossa Nodet ovat.
      *
      * @return Puun ensimm‰isen Noden.
      */
-    public Node createTree(PriorityQueue<Node> pq) {
-
-        while (nodes.size() > 1) {
-            Node a = nodes.poll();
-            Node b = nodes.poll();
+    public Node createTree(BinaryHeap bh) {
+        while (heap.getLast() > 1) {
+            Node a = heap.deleteMin();
+            Node b = heap.deleteMin();
 
             int x = a.getNumber() + b.getNumber();
 
@@ -101,7 +110,7 @@ public class Huffman {
             n.setRight(b);
 
             first = n;
-            nodes.add(n);
+            bh.insert(n);
         }
         return first;
     }
@@ -120,7 +129,7 @@ public class Huffman {
             decompressor += "1" + Character.toString(node.getCharacter());
         }
         if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '-') {
-            codes.put(node.getCharacter(), s);
+            amounts.addCode(node.getCharacter(), s);
             System.out.println(node.getCharacter() + "   |  " + s);
             return;
         }
@@ -138,7 +147,7 @@ public class Huffman {
         String s = "";
 
         for (int i = 0; i < text.length(); i++) {
-            s = codes.get(text.charAt(i));
+            s = amounts.returnCode(text.charAt(i));
             code += s;
         }
     }

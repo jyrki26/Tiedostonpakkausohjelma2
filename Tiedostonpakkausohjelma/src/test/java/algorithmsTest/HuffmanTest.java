@@ -4,6 +4,8 @@ package algorithmsTest;
 import Tiedostonpakkausohjelma.algorithms.Huffman;
 import Tiedostonpakkausohjelma.algorithms.Node;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
+import Tiedostonpakkausohjelma.tools.BinaryHeap;
+import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 import java.io.File;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -19,8 +21,8 @@ public class HuffmanTest {
     
     String s = "abbcccd.";
     Huffman huffman = new Huffman(s, new FileHandler(new File("test.txt")));
-    HashMap<Character, Integer> hm;
-    PriorityQueue<Node> pq;
+    BinaryHeap heap;
+    CharAmountsMap map;
     Node first;
     
     public HuffmanTest() {
@@ -36,8 +38,8 @@ public class HuffmanTest {
     
     @Before
     public void setUp() {
-        hm = huffman.buildHashMap(s);
-        pq = huffman.createNodes(hm);
+        map = huffman.buildHashMap(s);
+        heap = huffman.createNodes(map.keyset());
     }
     
     @After
@@ -46,25 +48,31 @@ public class HuffmanTest {
 
     @Test
     public void charactersInValuesCorrect(){
-        assertTrue(hm.containsKey('a'));
-        assertTrue(hm.containsKey('.'));
-        int s = hm.size();
+        assertTrue(map.containsChar('a'));
+        assertTrue(map.containsChar('.'));
+        int s = map.keyset().length;
         assertEquals(5, s);
     }
     
     @Test
     public void amountOfCharactersInValuesCorrect(){
         int a = 1;
-        int b = hm.get('a');
+        int b = map.getValue('a');
         assertEquals(a, b);
         int c = 3;
-        int d = hm.get('c');
+        int d = map.getValue('c');
         assertEquals(c, d);
     }
     
     @Test
+    public void amountOfNodesIsCorrect(){
+        int s = heap.getLast();
+        assertEquals(5, s);
+    }
+    
+    @Test
     public void nodesAreFormedCorrectly(){
-        Node node = pq.peek();
+        Node node = heap.deleteMin();
         char c = node.getCharacter();
         assertEquals('a', c);
         int a = node.getNumber();
@@ -72,14 +80,8 @@ public class HuffmanTest {
     }
     
     @Test
-    public void amountOfNodesIsCorrect(){
-        int s = pq.size();
-        assertEquals(5, s);
-    }
-    
-    @Test
     public void firstFormedCorrectly(){
-        first = huffman.createTree(pq);
+        first = huffman.createTree(heap);
         char c = first.getCharacter();
         int i = first.getNumber();
         
