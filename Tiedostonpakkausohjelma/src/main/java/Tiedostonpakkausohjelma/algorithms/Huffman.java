@@ -43,7 +43,7 @@ public class Huffman {
      */
     public void StartHuffman() throws IOException {
         amounts = buildHashMap(text);
-        heap = createNodes(amounts.keyset());
+        heap = createNodes(amounts);
         createTree(heap);
         createCode(first, "");
         compress();
@@ -62,12 +62,12 @@ public class Huffman {
      */
     public CharAmountsMap buildHashMap(String s) {
         CharAmountsMap map = new CharAmountsMap();
-        for (int i = 0; i < text.length(); i++) {
-            if (!map.containsChar(text.charAt(i))) {
-                map.addChar(new HashMapNode(text.charAt(i), 1));
+        for (int i = 0; i < s.length(); i++) {
+            if (!map.containsChar(s.charAt(i))) {
+                map.addChar(new HashMapNode(s.charAt(i), 1));
             } else {
-                int value = map.getValue(text.charAt(i));
-                map.addChar(new HashMapNode(text.charAt(i), value + 1));
+                int value = map.getValue(s.charAt(i));
+                map.addChar(new HashMapNode(s.charAt(i), value + 1));
             }
         }
 
@@ -77,16 +77,16 @@ public class Huffman {
     /**
      * Metodi muodostaa hajautustaulun tiedoista Nodet.
      *
-     * @param chars Hajautustaulu, jossa avaimena on merkki ja arvona merkkien
-     * määrä tekstissä.
+     * @param map Hajautustaulu.
      *
      * @return Prioriteettijono, jossa Nodet ovat.
      */
-    public BinaryHeap createNodes(char[] chars) {
+    public BinaryHeap createNodes(CharAmountsMap map) {
+        char[] chars = map.keyset();
         charAmount = chars.length;
         BinaryHeap bh = new BinaryHeap(new Node[charAmount * 2]);
         for(int i = 0; i < chars.length; i++){
-            bh.insert(new Node(amounts.getValue(chars[i]), chars[i]));
+            bh.insert(new Node(map.getValue(chars[i]), chars[i]));
         }
         return bh;
     }
@@ -99,9 +99,9 @@ public class Huffman {
      * @return Puun ensimmäisen Noden.
      */
     public Node createTree(BinaryHeap bh) {
-        while (heap.getLast() > 1) {
-            Node a = heap.deleteMin();
-            Node b = heap.deleteMin();
+        while (bh.getLast() > 1) {
+            Node a = bh.deleteMin();
+            Node b = bh.deleteMin();
 
             int x = a.getNumber() + b.getNumber();
 

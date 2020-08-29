@@ -39,7 +39,7 @@ public class HuffmanTest {
     @Before
     public void setUp() {
         map = huffman.buildHashMap(s);
-        heap = huffman.createNodes(map.keyset());
+        heap = huffman.createNodes(map);
     }
     
     @After
@@ -50,8 +50,8 @@ public class HuffmanTest {
     public void charactersInValuesCorrect(){
         assertTrue(map.containsChar('a'));
         assertTrue(map.containsChar('.'));
-        int s = map.keyset().length;
-        assertEquals(5, s);
+        int i = map.keyset().length;
+        assertEquals(5, i);
     }
     
     @Test
@@ -87,6 +87,13 @@ public class HuffmanTest {
         
         assertEquals('-', c);
         assertEquals(i, 8);
+    }
+    
+    @Test
+    public void codesFormedCorrectly(){
+        huffman.createCode(first, s);
+        String bString = map.returnCode('b');
+        assertEquals("01", bString);
     }
     
     

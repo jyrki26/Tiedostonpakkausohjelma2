@@ -67,7 +67,7 @@ public class CharAmountsMap {
      *
      * @return Hajautusarvo
      */
-    private int hash(char c) {
+    public int hash(char c) {
         int i = (int) c;
         int hash = (i + size) % size;
         return hash;

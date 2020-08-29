@@ -111,6 +111,7 @@ public class BinaryHeap {
     /**
      * Metodi palauttaa viimeisen solmun arvon ja samalla keon koon.
      * 
+     * @return Nodejen m‰‰r‰ keossa.
      */
     public int getLast() {
         return last;
