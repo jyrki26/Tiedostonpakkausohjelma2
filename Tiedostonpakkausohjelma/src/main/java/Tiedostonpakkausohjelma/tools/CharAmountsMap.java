@@ -3,8 +3,11 @@ package Tiedostonpakkausohjelma.tools;
 import Tiedostonpakkausohjelma.algorithms.HashMapNode;
 
 /**
- * Luokka luo sovelletun hajautustaulun, jossa avaimena toimii char. Ensimm‰isen‰ saman hajautusarvon saava node lis‰t‰‰n taulukkoon hajautusarvon kohdalle ja loput saman hajautusarvon saavat linkitet‰‰n siihen.
- * Avaimen perusteella voidaan hakea joko merkkien m‰‰r‰ alkuper‰isess‰ tiedostossa tai Huffamanin-koodi.
+ * Luokka luo sovelletun hajautustaulun, jossa avaimena toimii char.
+ * Ensimm‰isen‰ saman hajautusarvon saava node lis‰t‰‰n taulukkoon hajautusarvon
+ * kohdalle ja loput saman hajautusarvon saavat linkitet‰‰n siihen. Avaimen
+ * perusteella voidaan hakea joko merkkien m‰‰r‰ alkuper‰isess‰ tiedostossa tai
+ * Huffamanin-koodi.
  *
  */
 public class CharAmountsMap {
@@ -81,13 +84,21 @@ public class CharAmountsMap {
     private void increaseSize() {
         HashMapNode temp[] = map;
         map = new HashMapNode[2 * size];
-        size = 2 * size;
+        int newSize = 2 * size;
+        size = newSize;
         nodes = 0;
         for (int i = 0; i < temp.length; i++) {
-            HashMapNode n = temp[i];
-            while (n.getNext() != null) {
-                addChar(n);
-                n = n.getNext();
+            if (temp[i] != null) {
+                HashMapNode n = temp[i];
+                HashMapNode nod = temp[i];
+                nod.setNext(null);
+                addChar(nod);
+                while (n.getNext() != null) {
+                    n = n.getNext();
+                    nod = n.getNext();
+                    nod.setNext(null);
+                    addChar(nod);
+                }
             }
         }
     }
@@ -96,7 +107,7 @@ public class CharAmountsMap {
      * Metodi ilmoittaa sis‰lt‰‰kˆ hajautustaulu jotakin avainta.
      *
      * @param c Avain.
-     * 
+     *
      * @return Boolean-arvo.
      */
     public boolean containsChar(char c) {
@@ -106,19 +117,19 @@ public class CharAmountsMap {
         }
         return search(map[i], c) != null;
     }
-    
+
     /**
      * Metodi palauttaa avaimen perusteella arvon.
      *
      * @param c Avain.
-     * 
+     *
      * @return Arvo.
      */
     public int getValue(char c) {
         int i = hash(c);
         return search(map[i], c).value;
     }
-    
+
     /**
      * Metodi palauttaa hajautustaulun kaikki avaimet.
      *
@@ -141,37 +152,37 @@ public class CharAmountsMap {
         }
         return c;
     }
-    
+
     /**
      * Metodi avulla lis‰t‰‰n nodelle Huffman-koodissa k‰ytett‰v‰ koodi.
      *
      * @param c Avaimena k‰ytett‰v‰ merkki.
      * @param code Koodi, joka lis‰t‰‰n.
-     * 
+     *
      */
     public void addCode(char c, String code) {
         int i = hash(c);
         search(map[i], c).setCode(code);
     }
-    
+
     /**
      * Metodi palauttaa koodin merkin perusteella.
      *
      * @param c Avain.
-     * 
+     *
      * @return Koodi.
      */
     public String returnCode(char c) {
         int i = hash(c);
         return search(map[i], c).getCode();
     }
-    
+
     /**
      * Metodi etsii noden taulukon tietyst‰ kohdasta.
      *
      * @param node Taulukon tietyss‰ kohdassa oleva node.
      * @param key Avain, jota etsit‰‰n.
-     * 
+     *
      * @return Etsitt‰v‰ node.
      */
     public HashMapNode search(HashMapNode node, char key) {
