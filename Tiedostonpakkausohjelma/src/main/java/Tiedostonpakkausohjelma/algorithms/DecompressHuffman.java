@@ -12,17 +12,17 @@ import java.util.HashMap;
 public class DecompressHuffman {
 
     FileHandler filehandler;
-    String text;
-    Node first = new Node(0, '-');
+    String file;
+    Node first = new Node(0, '\u0238');
     int next = 0;
     private HashMap<Character, String> codes;
     String convertedToBytes;
     BinaryConverter bc;
     String saveToFile;
 
-    public DecompressHuffman(String text, FileHandler filehandler) {
+    public DecompressHuffman(String file, FileHandler filehandler) {
         this.filehandler = filehandler;
-        this.text = text;
+        this.file = file;
         this.codes = new HashMap<>();
         bc = new BinaryConverter();
 
@@ -33,13 +33,15 @@ public class DecompressHuffman {
      *
      */
     public void decompress() throws IOException {
-        String str[] = text.split("-", 2);
+        byte[] bytes = filehandler.readBytes(file);
+        String s = bc.byteToString(bytes);
+        String str[] = s.split("22", 2);
         System.out.println(str[0]);
         first = buildTree(str[0], next);
         createCodes(first, "");
         convertedToBytes = convertToBytes(str[1]);
         System.out.println(convertedToBytes);
-        saveToFile = recreateText(convertedToBytes);
+        saveToFile = recreateText(str[1]);
         filehandler.writeToFile(saveToFile, "purettu.txt");
     }
 
@@ -55,7 +57,7 @@ public class DecompressHuffman {
             System.out.println(n.getCharacter());
             return n;
         } else {
-            Node n = new Node(0, '-');
+            Node n = new Node(0, '\u0238');
             n.setLeft(buildTree(text, codeReader(text)));
             n.setRight(buildTree(text, codeReader(text)));
             return n;
@@ -89,8 +91,9 @@ public class DecompressHuffman {
      * kirjainta kuvaavat bitit.
      */
     public void createCodes(Node node, String s) {
-        if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '-') {
-            System.out.println(node.getCharacter() + "   |  " + s);
+        if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '\u0238') {
+            System.out.println(node.getCharacter() + "|" + s);
+            System.out.println("_________________");
             codes.put(node.getCharacter(), s);
             return;
         }
@@ -117,8 +120,10 @@ public class DecompressHuffman {
         }
         if (start < length) {
             fixed += (bytes.substring(start, length));
+            System.out.println("loppu" + bytes.substring(start, length));
         }
-
+        
+        System.out.println("fixed " + fixed);
         return fixed;
     }
     
@@ -154,7 +159,7 @@ public class DecompressHuffman {
         String help = "";
         for (int i = 0; i < text.length(); i++) {
             help += text.charAt(i);
-            if (findChar(first, help) != '-') {
+            if (findChar(first, help) != '\u0238') {
                 full += findChar(first, help);
                 help = "";
             }

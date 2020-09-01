@@ -30,6 +30,7 @@ public class AppUi {
             if(number == 3){
                 System.out.println("Ohjelma sammutettu.");
                 break;
+            } else {
             }
         }
     }
@@ -43,7 +44,7 @@ public class AppUi {
         System.out.println("Paina 1 + ENTER, jos haluat pakata tiedoston");
         System.out.println("Paina 2 + ENTER, jos haluat purkaa tiedoston");
         System.out.println("Paina 3 + ENTER, jos haluat lopettaa");
-        System.out.print("Anna valinta: ");
+        System.out.println("Anna valinta: ");
         number = Integer.parseInt(scanner.nextLine());
         if (number == 1) {
             CompressHuffman();
@@ -61,8 +62,7 @@ public class AppUi {
         System.out.println("Anna pakattavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki ");
         file = new File(scanner.nextLine());
         filereader = new FileHandler(file);
-        String text = filereader.Read();
-        Huffman huffman = new Huffman(text, filereader);
+        Huffman huffman = new Huffman(filereader);
         huffman.StartHuffman();
     }
     
@@ -72,9 +72,9 @@ public class AppUi {
      */
     void decompressHuffman() throws IOException{
         System.out.println("Anna purettavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki ");
-        file = new File(scanner.nextLine());
+        String text = scanner.nextLine();
+        file = new File(text);
         filereader = new FileHandler(file);
-        String text = filereader.Read();
         DecompressHuffman decompress = new DecompressHuffman(text, filereader);
         decompress.decompress();
     }

@@ -25,11 +25,9 @@ public class Huffman {
     private int charAmount;
     private BinaryHeap heap;
 
-    public Huffman(String text, FileHandler filehandler) {
-        this.text = text;
+    public Huffman(FileHandler filehandler) {
         this.values = new HashMap<>();
         this.filehandler = filehandler;
-        bytes = text.getBytes();
         nodes = new PriorityQueue<>(new ImplementComparator());
         codes = new HashMap<>();
         code = "";
@@ -42,14 +40,13 @@ public class Huffman {
      *
      */
     public void StartHuffman() throws IOException {
+        text = filehandler.Read();
         amounts = buildHashMap(text);
         heap = createNodes(amounts);
         createTree(heap);
         createCode(first, "");
         compress();
-        System.out.println(code);
-        System.out.println(divideToBytes());
-        System.out.println("a " + (int)'a');
+        biteDiveder();
         
     }
     /**
@@ -105,7 +102,7 @@ public class Huffman {
 
             int x = a.getNumber() + b.getNumber();
 
-            Node n = new Node(x, '-');
+            Node n = new Node(x,'\u0238');
             n.setLeft(a);
             n.setRight(b);
 
@@ -123,14 +120,13 @@ public class Huffman {
      * @param s string, joka kasvaa puuta alasp‰in liikuttaessa
      */
     public void createCode(Node node, String s) {
-        if (node.getCharacter() == '-') {
+        if (node.getCharacter() == '\u0238') {
             decompressor += "0";
         } else {
             decompressor += "1" + Character.toString(node.getCharacter());
         }
-        if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '-') {
+        if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '\u0238') {
             amounts.addCode(node.getCharacter(), s);
-            System.out.println(node.getCharacter() + "   |  " + s);
             return;
         }
 
@@ -154,7 +150,7 @@ public class Huffman {
 
     /**
      * Metodi jakaa koodin seitsem‰n merkin mittaisiin paloihin ja muuttaa ne
-     * merkeiksi ja lis‰‰ alkuun avaimen, jolla puun saa muodostettuu tiedostoa
+     * merkeiksi ja lis‰‰ alkuun avaimen, jolla puun saa muodostettua tiedostoa
      * purettaessa. Jokaisen seitsem‰n merkin eteen lis‰t‰‰n 0, jotta niist‰
      * muodostuu tavun mittainen, lukuunottamatta viimeist‰, jonka eteen
      * lis‰t‰‰n 1.
@@ -166,16 +162,10 @@ public class Huffman {
         int y = 0;
         int x = 0;
         String str = "";
-        String testi = "";
 
         for (int i = 0; i < code.length(); i++) {
             if (y == 7) {
-                System.out.println(" t‰ss‰ " + (code.substring(x, i)));
-                System.out.println("i =" + i);
-                System.out.println("y =" + y);
-                System.out.println("x =" + x);
                 String s = "0" + code.substring(x, i);
-                testi += s;
                 str = str + bc.stringToBinary2(s);
                 x = i;
                 y = 0;
@@ -183,17 +173,48 @@ public class Huffman {
             y++;
         }
         
-        System.out.println("cd " + code.length());
-        System.out.println("x " + x);
-        System.out.println("y " + y);
-        System.out.println(code.substring(x, code.length() - 1));
         if (code.length() % 7 != 0) {
-            str = str + bc.stringToBinary2("1" + code.substring(x, code.length() - 1));
+            str = str + bc.stringToBinary2("1" + code.substring(x, code.length()));
         }
-        System.out.println("testi " + testi);
-        decompressor += "-" + str;
+        decompressor += "22" + str;
         filehandler.writeToFile(decompressor, "tiedosto.txt");
         return decompressor;
+    }
+    
+    public void biteDiveder(){
+        decompressor += "22";
+        byte[] b = decompressor.getBytes();
+        int numberOfBytes;
+        if(code.length() % 7 == 0){
+            numberOfBytes = code.length()/7 + b.length;
+        } else {
+            numberOfBytes = code.length()/7 + 1 + b.length;
+        }
+        
+        bytes = new byte[numberOfBytes];
+        for(int i = 0; i < b.length; i++){
+            bytes[i] = b[i];
+        }
+        int y = 0;
+        int x = 0;
+        int number = b.length;
+
+        for (int i = 0; i < code.length(); i++) {
+            if (y == 7) {
+                String s = "0" + code.substring(x, i);
+                bytes[number] = bc.stringToByte(s);
+                x = i;
+                y = 0;
+                number++;
+            }
+            y++;
+        }
+        
+        if (code.length() % 7 != 0) {
+            bytes[number] = bc.stringToByte("1" + code.substring(x, code.length()));
+        }
+
+        filehandler.writeBytes("bitit", bytes);
     }
 
 }
