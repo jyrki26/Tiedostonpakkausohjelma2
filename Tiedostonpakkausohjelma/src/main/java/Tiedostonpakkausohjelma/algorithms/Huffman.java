@@ -1,21 +1,15 @@
 package Tiedostonpakkausohjelma.algorithms;
 
-import Tiedostonpakkausohjelma.algorithms.Node.ImplementComparator;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryConverter;
 import Tiedostonpakkausohjelma.tools.BinaryHeap;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.PriorityQueue;
 import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 
 public class Huffman {
 
     private String text;
-    private HashMap<Character, Integer> values;
-    private HashMap<Character, String> codes;
     private byte[] bytes;
-    private PriorityQueue<Node> nodes;
     private Node first;
     private String code;
     private BinaryConverter bc;
@@ -26,10 +20,7 @@ public class Huffman {
     private BinaryHeap heap;
 
     public Huffman(FileHandler filehandler) {
-        this.values = new HashMap<>();
         this.filehandler = filehandler;
-        nodes = new PriorityQueue<>(new ImplementComparator());
-        codes = new HashMap<>();
         code = "";
         bc = new BinaryConverter();
     }
@@ -39,16 +30,17 @@ public class Huffman {
      * hajautustaulun avulla eri merkkien lukum‰‰r‰n.
      *
      */
-    public void StartHuffman() throws IOException {
-        text = filehandler.Read();
+    public void startHuffman() throws IOException {
+        text = filehandler.read();
         amounts = buildHashMap(text);
         heap = createNodes(amounts);
         createTree(heap);
         createCode(first, "");
         compress();
-        biteDiveder();
-        
+        biteDivider();
+
     }
+
     /**
      * Metodi laskee pakattavassa tiedostossa olevan merkkien m‰‰r‰n ja
      * sijoittaa ne hajautustauluun.
@@ -82,7 +74,7 @@ public class Huffman {
         char[] chars = map.keyset();
         charAmount = chars.length;
         BinaryHeap bh = new BinaryHeap(new Node[charAmount * 2]);
-        for(int i = 0; i < chars.length; i++){
+        for (int i = 0; i < chars.length; i++) {
             bh.insert(new Node(map.getValue(chars[i]), chars[i]));
         }
         return bh;
@@ -102,7 +94,7 @@ public class Huffman {
 
             int x = a.getNumber() + b.getNumber();
 
-            Node n = new Node(x,'\u0238');
+            Node n = new Node(x, '\u0238');
             n.setLeft(a);
             n.setRight(b);
 
@@ -148,51 +140,14 @@ public class Huffman {
         }
     }
 
-    /**
-     * Metodi jakaa koodin seitsem‰n merkin mittaisiin paloihin ja muuttaa ne
-     * merkeiksi ja lis‰‰ alkuun avaimen, jolla puun saa muodostettua tiedostoa
-     * purettaessa. Jokaisen seitsem‰n merkin eteen lis‰t‰‰n 0, jotta niist‰
-     * muodostuu tavun mittainen, lukuunottamatta viimeist‰, jonka eteen
-     * lis‰t‰‰n 1.
-     *
-     * @return Pakattuun tiedostoon tallennettava teksti.
-     *
-     */
-    public String divideToBytes() throws IOException {
-        int y = 0;
-        int x = 0;
-        String str = "";
-
-        for (int i = 0; i < code.length(); i++) {
-            if (y == 7) {
-                String s = "0" + code.substring(x, i);
-                str = str + bc.stringToBinary2(s);
-                x = i;
-                y = 0;
-            }
-            y++;
-        }
-        
-        if (code.length() % 7 != 0) {
-            str = str + bc.stringToBinary2("1" + code.substring(x, code.length()));
-        }
-        decompressor += "22" + str;
-        filehandler.writeToFile(decompressor, "tiedosto.txt");
-        return decompressor;
-    }
-    
-    public void biteDiveder(){
+    public void biteDivider() {
         decompressor += "22";
         byte[] b = decompressor.getBytes();
         int numberOfBytes;
-        if(code.length() % 7 == 0){
-            numberOfBytes = code.length()/7 + b.length;
-        } else {
-            numberOfBytes = code.length()/7 + 1 + b.length;
-        }
-        
+        numberOfBytes = code.length() / 8 + 1 + b.length;
+
         bytes = new byte[numberOfBytes];
-        for(int i = 0; i < b.length; i++){
+        for (int i = 0; i < b.length; i++) {
             bytes[i] = b[i];
         }
         int y = 0;
@@ -200,8 +155,8 @@ public class Huffman {
         int number = b.length;
 
         for (int i = 0; i < code.length(); i++) {
-            if (y == 7) {
-                String s = "0" + code.substring(x, i);
+            if (y == 8) {
+                String s = code.substring(x, i);
                 bytes[number] = bc.stringToByte(s);
                 x = i;
                 y = 0;
@@ -209,12 +164,15 @@ public class Huffman {
             }
             y++;
         }
-        
-        if (code.length() % 7 != 0) {
+
+        if (code.length() % 8 != 0) {
             bytes[number] = bc.stringToByte("1" + code.substring(x, code.length()));
+        } else {
+            bytes[number] = bc.stringToByte("00000001");
         }
 
         filehandler.writeBytes("bitit", bytes);
+        System.out.println("Pakkaus onnistui.");
     }
 
 }

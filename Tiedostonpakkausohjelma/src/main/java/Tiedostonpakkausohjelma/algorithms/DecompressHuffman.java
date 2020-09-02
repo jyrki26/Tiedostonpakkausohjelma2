@@ -2,6 +2,7 @@ package Tiedostonpakkausohjelma.algorithms;
 
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryConverter;
+import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -15,7 +16,6 @@ public class DecompressHuffman {
     String file;
     Node first = new Node(0, '\u0238');
     int next = 0;
-    private HashMap<Character, String> codes;
     String convertedToBytes;
     BinaryConverter bc;
     String saveToFile;
@@ -23,7 +23,6 @@ public class DecompressHuffman {
     public DecompressHuffman(String file, FileHandler filehandler) {
         this.filehandler = filehandler;
         this.file = file;
-        this.codes = new HashMap<>();
         bc = new BinaryConverter();
 
     }
@@ -36,11 +35,7 @@ public class DecompressHuffman {
         byte[] bytes = filehandler.readBytes(file);
         String s = bc.byteToString(bytes);
         String str[] = s.split("22", 2);
-        System.out.println(str[0]);
         first = buildTree(str[0], next);
-        createCodes(first, "");
-        convertedToBytes = convertToBytes(str[1]);
-        System.out.println(convertedToBytes);
         saveToFile = recreateText(str[1]);
         filehandler.writeToFile(saveToFile, "purettu.txt");
     }
@@ -50,11 +45,11 @@ public class DecompressHuffman {
      *
      * @param text Teksti, jonka perusteella puu muodostetaan.
      * @param i Seuraavana käsiteltävä kirjain.
+     * @return Palauttaa puun ensimmäisen solmun.
      */
     public Node buildTree(String text, int i) {
         if (text.charAt(next) == '1') {
             Node n = new Node(0, text.charAt(next + 1));
-            System.out.println(n.getCharacter());
             return n;
         } else {
             Node n = new Node(0, '\u0238');
@@ -80,51 +75,6 @@ public class DecompressHuffman {
             }
         }
         return next;
-    }
-
-    /**
-     * Metodi purkaa puun hajautustauluun.
-     *
-     * @param node Kulloinkin käsiteltävä solmu.
-     *
-     * @param s String-muotoinen teksti, jonka perusteella muodostuvat kutakin
-     * kirjainta kuvaavat bitit.
-     */
-    public void createCodes(Node node, String s) {
-        if (node.getLeft() == null && node.getRight() == null && node.getCharacter() != '\u0238') {
-            System.out.println(node.getCharacter() + "|" + s);
-            System.out.println("_________________");
-            codes.put(node.getCharacter(), s);
-            return;
-        }
-
-        createCodes(node.getLeft(), s + "0");
-        createCodes(node.getRight(), s + "1");
-    }
-
-    /**
-     * Metodi muuntaa Huffman-koodin takaisin tavun mittaisiksi numerosarjoiksi.
-     *
-     * @param s Pakattu Huffman-koodi.
-     *
-     * @return Alkuperäinen koodi.
-     */
-    public String convertToBytes(String s) {
-        String bytes = bc.BinaryToString(s);
-        String fixed = "";
-        int length = bytes.length();
-        int start = 1;
-        while ((start + 7) < length) {
-            fixed += (bytes.substring(start, start + 7));
-            start += 8;
-        }
-        if (start < length) {
-            fixed += (bytes.substring(start, length));
-            System.out.println("loppu" + bytes.substring(start, length));
-        }
-        
-        System.out.println("fixed " + fixed);
-        return fixed;
     }
     
     /**

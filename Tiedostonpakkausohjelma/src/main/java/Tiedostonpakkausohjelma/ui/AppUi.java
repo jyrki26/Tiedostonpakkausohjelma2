@@ -1,15 +1,15 @@
-
 package Tiedostonpakkausohjelma.ui;
 
 import Tiedostonpakkausohjelma.algorithms.DecompressHuffman;
 import Tiedostonpakkausohjelma.algorithms.Huffman;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-
 public class AppUi {
+
     Scanner scanner;
     File file;
     FileHandler filereader;
@@ -22,12 +22,13 @@ public class AppUi {
     /**
      * Metodi k‰ynnist‰‰ ohjelman.
      *
+     * @throws java.io.IOException
      */
-    public void Start() throws IOException {
+    public void start() throws IOException {
         System.out.println("K‰ynniss‰");
         while (true) {
-            Dialog();
-            if(number == 3){
+            dialog();
+            if (number == 3) {
                 System.out.println("Ohjelma sammutettu.");
                 break;
             } else {
@@ -40,14 +41,14 @@ public class AppUi {
      * tehd‰.
      *
      */
-    void Dialog() throws IOException {
+    void dialog() throws IOException {
         System.out.println("Paina 1 + ENTER, jos haluat pakata tiedoston");
         System.out.println("Paina 2 + ENTER, jos haluat purkaa tiedoston");
         System.out.println("Paina 3 + ENTER, jos haluat lopettaa");
         System.out.println("Anna valinta: ");
         number = Integer.parseInt(scanner.nextLine());
         if (number == 1) {
-            CompressHuffman();
+            compressHuffman();
         }
         if (number == 2) {
             decompressHuffman();
@@ -58,25 +59,43 @@ public class AppUi {
      * Metodi k‰ynnist‰‰ tiedoston pakkauksen Huffmanin algoritmilla.
      *
      */
-    void CompressHuffman() throws IOException {
+    void compressHuffman() throws IOException {
         System.out.println("Anna pakattavan tiedoston osoite niin, ett‰ \\-merkin tilalla on /-merkki ");
         file = new File(scanner.nextLine());
+        System.out.println("Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yrit‰ uudestaan.");
+        long startTime = System.currentTimeMillis();
         filereader = new FileHandler(file);
         Huffman huffman = new Huffman(filereader);
-        huffman.StartHuffman();
+        try {
+            huffman.startHuffman();
+            long endTime = System.currentTimeMillis() - startTime;
+            System.out.println("Aikaa pakkaamiseen kului: " + endTime + " millisekuntia");
+            System.out.println(filereader.compressionRate());
+        } catch (IOException e) {
+            System.out.println("Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yrit‰ uudestaan.");
+        } catch (Exception e) {
+        }
     }
-    
+
     /**
      * Metodi k‰ynnist‰‰ Huffmanin algoritmilla pakatun tiedoston purkamisen.
      *
      */
-    void decompressHuffman() throws IOException{
+    void decompressHuffman() throws IOException {
         System.out.println("Anna purettavan tiedoston osoite niin, ett‰ \\-merkin tilalla on /-merkki ");
         String text = scanner.nextLine();
+        long startTime = System.currentTimeMillis();
         file = new File(text);
         filereader = new FileHandler(file);
         DecompressHuffman decompress = new DecompressHuffman(text, filereader);
-        decompress.decompress();
+        try {
+            decompress.decompress();
+            long endTime = System.currentTimeMillis() - startTime;
+            System.out.println("Aikaa purkamiseen meni: " + endTime + " millisekuntia");
+        } catch (IOException e) {
+            System.out.println("Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yrit‰ uudestaan.");
+        } catch (Exception e) {
+        }
     }
 
 }
