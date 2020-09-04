@@ -37,7 +37,7 @@ public class FileHandler {
             scanner.close();
 
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            System.out.println(ex);
         }
         String correct = text.substring(0, text.length() - 1);
         return correct;
@@ -49,7 +49,7 @@ public class FileHandler {
             System.out.println("Tallennus onnistui.");
             writer.close();
         } catch (Exception e) {
-            System.out.println("Tallennus ep‰onnistui. " + e);
+            System.out.println("Tallennus ep√§onnistui. " + e);
         }
 
     }
@@ -72,9 +72,9 @@ public class FileHandler {
         long original = file.length();
         long compressed = b.length;
         double rate = ((double)compressed / original) * 100;
-        String s = "Alkuper‰inen koko: " + original + " tavua.\n"+
+        String s = "Alkuper√§inen koko: " + original + " tavua.\n"+
                    "Pakattu koko: " + compressed + " tavua.\n" + 
-                   "Pakattu tiedosto on " + rate + " prosenttia alkuper‰isest‰.";
+                   "Pakattu tiedosto on " + rate + " prosenttia alkuper√§isest√§.";
         return s;
     }
 }

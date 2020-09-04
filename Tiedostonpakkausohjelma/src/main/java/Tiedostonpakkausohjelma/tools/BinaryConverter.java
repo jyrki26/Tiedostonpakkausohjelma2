@@ -1,7 +1,7 @@
 package Tiedostonpakkausohjelma.tools;
 
 /**
- * Luokka vastaa merkkien muuttamisesta bin‰‰rimuotoon.
+ * Luokka vastaa merkkien muuttamisesta bin√§√§rimuotoon.
  *
  */
 public class BinaryConverter {

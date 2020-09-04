@@ -4,9 +4,9 @@ import Tiedostonpakkausohjelma.algorithms.HashMapNode;
 
 /**
  * Luokka luo sovelletun hajautustaulun, jossa avaimena toimii char.
- * Ensimm‰isen‰ saman hajautusarvon saava node lis‰t‰‰n taulukkoon hajautusarvon
- * kohdalle ja loput saman hajautusarvon saavat linkitet‰‰n siihen. Avaimen
- * perusteella voidaan hakea joko merkkien m‰‰r‰ alkuper‰isess‰ tiedostossa tai
+ * Ensimm√§isen√§ saman hajautusarvon saava node lis√§t√§√§n taulukkoon hajautusarvon
+ * kohdalle ja loput saman hajautusarvon saavat linkitet√§√§n siihen. Avaimen
+ * perusteella voidaan hakea joko merkkien m√§√§r√§ alkuper√§isess√§ tiedostossa tai
  * Huffamanin-koodi.
  *
  */
@@ -23,7 +23,7 @@ public class CharAmountsMap {
     }
 
     /**
-     * Metodi lis‰‰ uuden avaintietoparin hajautustauluun.
+     * Metodi lis√§√§ uuden avaintietoparin hajautustauluun.
      *
      * @param node Solmu.
      */
@@ -78,7 +78,7 @@ public class CharAmountsMap {
 
     /**
      * Metodi kasvattaa taulukon koon kaksinkertaiseksi ja laskee uudet
-     * hajautusarvot, jos v‰hint‰‰n avaintietopareja on v‰hint‰‰n 3/4 taulukon
+     * hajautusarvot, jos v√§hint√§√§n avaintietopareja on v√§hint√§√§n 3/4 taulukon
      * koosta.
      */
     private void increaseSize() {
@@ -90,13 +90,11 @@ public class CharAmountsMap {
         for (int i = 0; i < temp.length; i++) {
             if (temp[i] != null) {
                 HashMapNode n = temp[i];
-                HashMapNode nod = temp[i];
-                nod.setNext(null);
+                HashMapNode nod = new HashMapNode(n.getKey(), n.getValue());
                 addChar(nod);
                 while (n.getNext() != null) {
                     n = n.getNext();
-                    nod = n.getNext();
-                    nod.setNext(null);
+                    nod = new HashMapNode(n.getKey(), n.getValue());
                     addChar(nod);
                 }
             }
@@ -104,7 +102,7 @@ public class CharAmountsMap {
     }
 
     /**
-     * Metodi ilmoittaa sis‰lt‰‰kˆ hajautustaulu jotakin avainta.
+     * Metodi ilmoittaa sis√§lt√§√§k√∂ hajautustaulu jotakin avainta.
      *
      * @param c Avain.
      *
@@ -154,10 +152,10 @@ public class CharAmountsMap {
     }
 
     /**
-     * Metodi avulla lis‰t‰‰n nodelle Huffman-koodissa k‰ytett‰v‰ koodi.
+     * Metodi avulla lis√§t√§√§n nodelle Huffman-koodissa k√§ytett√§v√§ koodi.
      *
-     * @param c Avaimena k‰ytett‰v‰ merkki.
-     * @param code Koodi, joka lis‰t‰‰n.
+     * @param c Avaimena k√§ytett√§v√§ merkki.
+     * @param code Koodi, joka lis√§t√§√§n.
      *
      */
     public void addCode(char c, String code) {
@@ -178,12 +176,12 @@ public class CharAmountsMap {
     }
 
     /**
-     * Metodi etsii noden taulukon tietyst‰ kohdasta.
+     * Metodi etsii noden taulukon tietyst√§ kohdasta.
      *
-     * @param node Taulukon tietyss‰ kohdassa oleva node.
-     * @param key Avain, jota etsit‰‰n.
+     * @param node Taulukon tietyss√§ kohdassa oleva node.
+     * @param key Avain, jota etsit√§√§n.
      *
-     * @return Etsitt‰v‰ node.
+     * @return Etsitt√§v√§ node.
      */
     public HashMapNode search(HashMapNode node, char key) {
         if (node.getKey() == key) {

@@ -7,6 +7,7 @@ import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryHeap;
 import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import org.junit.After;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
 public class HuffmanTest {
     
     String s = "abbcccd.";
-    Huffman huffman = new Huffman(s, new FileHandler(new File("test.txt")));
+    Huffman huffman = new Huffman(new FileHandler(new File("test.txt")));
     BinaryHeap heap;
     CharAmountsMap map;
     Node first;
@@ -85,15 +86,16 @@ public class HuffmanTest {
         char c = first.getCharacter();
         int i = first.getNumber();
         
-        assertEquals('-', c);
+        assertEquals('\u0238', c);
         assertEquals(i, 8);
     }
     
     @Test
-    public void codesFormedCorrectly(){
-        huffman.createCode(first, s);
+    public void codesFormedCorrectly() throws IOException{
+        Huffman testHuffman = new Huffman(new FileHandler(new File("test.txt")));
+        testHuffman.startHuffman();
         String bString = map.returnCode('b');
-        assertEquals("01", bString);
+        assertEquals("02", bString);
     }
     
     

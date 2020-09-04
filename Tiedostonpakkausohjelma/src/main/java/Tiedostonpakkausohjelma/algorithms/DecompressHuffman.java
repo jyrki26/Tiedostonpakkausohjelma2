@@ -28,7 +28,7 @@ public class DecompressHuffman {
     }
 
     /**
-     * Metodi k‰ynnist‰‰ tiedoston purun.
+     * Metodi k√§ynnist√§√§ tiedoston purun.
      *
      */
     public void decompress() throws IOException {
@@ -41,15 +41,16 @@ public class DecompressHuffman {
     }
 
     /**
-     * Metodi rakentaa bin‰‰ripuun pakatun tiedoston alussa olevasta tekstist‰.
+     * Metodi rakentaa bin√§√§ripuun pakatun tiedoston alussa olevasta tekstist√§.
      *
      * @param text Teksti, jonka perusteella puu muodostetaan.
-     * @param i Seuraavana k‰sitelt‰v‰ kirjain.
-     * @return Palauttaa puun ensimm‰isen solmun.
+     * @param i Seuraavana k√§sitelt√§v√§ kirjain.
+     * @return Palauttaa puun ensimm√§isen solmun.
      */
     public Node buildTree(String text, int i) {
         if (text.charAt(next) == '1') {
             Node n = new Node(0, text.charAt(next + 1));
+            next +=1;
             return n;
         } else {
             Node n = new Node(0, '\u0238');
@@ -60,7 +61,7 @@ public class DecompressHuffman {
     }
 
     /**
-     * Metodi m‰‰ritt‰‰ mik‰ kirjain k‰sitell‰‰n seuraavaksi metodissa
+     * Metodi m√§√§ritt√§√§ mik√§ kirjain k√§sitell√§√§n seuraavaksi metodissa
      * buildTree.
      *
      * @param code Teksti, jonka perusteella puu muodostetaan.
@@ -80,7 +81,7 @@ public class DecompressHuffman {
     /**
      * Metodi etsii puusta oikean merkin.
      *
-     * @param node Ensimm‰inen node.
+     * @param node Ensimm√§inen node.
      * @param s Huffman-koodi.
      * 
      * @return Oikea merkki.
@@ -100,9 +101,9 @@ public class DecompressHuffman {
     /**
      * Metodi pilkkoo koodin paloihin ja hakee oikean merkin metodin findChar avulla.
      *
-     * @param text Alkuper‰inen koodi.
+     * @param text Alkuper√§inen koodi.
      * 
-     * @return Alkuper‰inen teksti.
+     * @return Alkuper√§inen teksti.
      */
     public String recreateText(String text) {
         String full = "";

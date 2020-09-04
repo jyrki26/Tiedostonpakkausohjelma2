@@ -26,8 +26,8 @@ public class Huffman {
     }
 
     /**
-     * Metodi k‰y String-muotoon muutetun tiedoston l‰pi ja laskee
-     * hajautustaulun avulla eri merkkien lukum‰‰r‰n.
+     * Metodi k√§y String-muotoon muutetun tiedoston l√§pi ja laskee
+     * hajautustaulun avulla eri merkkien lukum√§√§r√§n.
      *
      */
     public void startHuffman() throws IOException {
@@ -42,12 +42,12 @@ public class Huffman {
     }
 
     /**
-     * Metodi laskee pakattavassa tiedostossa olevan merkkien m‰‰r‰n ja
+     * Metodi laskee pakattavassa tiedostossa olevan merkkien m√§√§r√§n ja
      * sijoittaa ne hajautustauluun.
      *
-     * @param s Pakattavan tiedoston sis‰lt‰m‰n teksti String-muodossa.
+     * @param s Pakattavan tiedoston sis√§lt√§m√§n teksti String-muodossa.
      *
-     * @return Hajautustaulu, jossa kirjaimien m‰‰r‰t on laskettu.
+     * @return Hajautustaulu, jossa kirjaimien m√§√§r√§t on laskettu.
      */
     public CharAmountsMap buildHashMap(String s) {
         CharAmountsMap map = new CharAmountsMap();
@@ -85,7 +85,7 @@ public class Huffman {
      *
      * @param bh Prioriteettijono, jossa Nodet ovat.
      *
-     * @return Puun ensimm‰isen Noden.
+     * @return Puun ensimm√§isen Noden.
      */
     public Node createTree(BinaryHeap bh) {
         while (bh.getLast() > 1) {
@@ -109,7 +109,7 @@ public class Huffman {
      * hashmappiin.
      *
      * @param node solmu, jolle metodi laskee arvon
-     * @param s string, joka kasvaa puuta alasp‰in liikuttaessa
+     * @param s string, joka kasvaa puuta alasp√§in liikuttaessa
      */
     public void createCode(Node node, String s) {
         if (node.getCharacter() == '\u0238') {
@@ -128,14 +128,15 @@ public class Huffman {
     }
 
     /**
-     * Metodi k‰y tekstin l‰pi ja muuntaa jokaisen kirjaimen koodiksi.
+     * Metodi k√§y tekstin l√§pi ja muuntaa jokaisen kirjaimen koodiksi.
      *
      */
     public void compress() {
         String s = "";
 
         for (int i = 0; i < text.length(); i++) {
-            s = amounts.returnCode(text.charAt(i));
+            char c = text.charAt(i);
+            s = amounts.returnCode(c);
             code += s;
         }
     }

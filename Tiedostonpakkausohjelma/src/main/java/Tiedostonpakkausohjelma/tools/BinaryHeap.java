@@ -3,7 +3,7 @@ package Tiedostonpakkausohjelma.tools;
 import Tiedostonpakkausohjelma.algorithms.Node;
 
 /**
- * Luokka toteuttaa bin‰‰rikeon sovelluksessa tarvittavilta osin.
+ * Luokka toteuttaa bin√§√§rikeon sovelluksessa tarvittavilta osin.
  */
 public class BinaryHeap {
 
@@ -16,9 +16,9 @@ public class BinaryHeap {
     }
     
     /**
-     * Metodi lis‰‰ kekoon uuden solmun ja toteuttaa samalla kekoehdon s‰ilymisen.
+     * Metodi lis√§√§ kekoon uuden solmun ja toteuttaa samalla kekoehdon s√§ilymisen.
      *
-     * @param node Lis‰tt‰v‰ solmu.
+     * @param node Lis√§tt√§v√§ solmu.
      */
     public void insert(Node node) {
         last += 1;
@@ -31,7 +31,7 @@ public class BinaryHeap {
     }
     
     /**
-     * Metodi poistaa pienimm‰n, eli keon ensimm‰isen solmun. K‰yt‰nnˆss‰ solmu siirtyy viimeisest‰ solmusta ilmoittavan arvon last-ulkopuolelle.
+     * Metodi poistaa pienimm√§n, eli keon ensimm√§isen solmun. K√§yt√§nn√∂ss√§ solmu siirtyy viimeisest√§ solmusta ilmoittavan arvon last-ulkopuolelle.
      *
      * @return Pienin solmu.
      */
@@ -46,7 +46,7 @@ public class BinaryHeap {
     
     
     /**
-     * Metodi laskee keossa ensimm‰iseksi nostetun viimeisen solmun oikealle paikalle.
+     * Metodi laskee keossa ensimm√§iseksi nostetun viimeisen solmun oikealle paikalle.
      *
      * @param s Solmun sijainti keossa.
      */
@@ -99,7 +99,7 @@ public class BinaryHeap {
     /**
      * Metodi vaihtaa kahden solmun paikat.
      * 
-     * @param first Ensimm‰isen vaihdettavan solmun sijainti.
+     * @param first Ensimm√§isen vaihdettavan solmun sijainti.
      * @param second Toisen vaihdettavan solmun sijainti.
      */
     private void change(int first, int second) {
@@ -111,7 +111,7 @@ public class BinaryHeap {
     /**
      * Metodi palauttaa viimeisen solmun arvon ja samalla keon koon.
      * 
-     * @return Nodejen m‰‰r‰ keossa.
+     * @return Nodejen m√§√§r√§ keossa.
      */
     public int getLast() {
         return last;
