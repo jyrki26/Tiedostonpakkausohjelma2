@@ -16,6 +16,9 @@ Ohjelma on toteutettu Helsingin yliopiston aineopintojen Tietorakenteet ja algor
 ### Toteutusdokumentti
 [Toteutusdokumentti](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/toteutusdokumentti.md)
 
+### Ohjelma
+[Jar-tiedosto](https://github.com/jyrki26/Tiedostonpakkausohjelma2/releases/tag/v1.0)
+
 ### Viikkoraportit
 [Viikko 1](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/viikkoraportti1.md) <br/>
 [Viikko 2](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/viikkoraportti2.md) <br/>

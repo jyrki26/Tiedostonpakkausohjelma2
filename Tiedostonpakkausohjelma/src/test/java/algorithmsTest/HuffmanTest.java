@@ -6,9 +6,6 @@ import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryHeap;
 import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.PriorityQueue;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,7 +40,7 @@ public class HuffmanTest {
     public void setUp() {
         map = huffman.buildHashMap(s);
         heap = huffman.createNodes(map);
-        
+
     }
 
     @After

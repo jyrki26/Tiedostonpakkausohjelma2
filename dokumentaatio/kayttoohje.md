@@ -9,6 +9,8 @@ Lisäksi tiedoston voi käynnistää repositoriosta löytyvästä jar-tiedostost
 ```
 java -jar Tiedostonpakkausohjelma.jar
 ```
+Jar-tiedosto löytyy alla olevasta releasesta
+[Jar-tiedosto](https://github.com/jyrki26/Tiedostonpakkausohjelma2/releases/tag/v1.0)
 
 ### Ohjelman käyttäminen
 Ohjelmassa on kolme vaihtoehtoa. Haluttu vaihtoehto valitaan ohjeiden mukaisesti joko numerolla 1, 2 tai 3. <br/>
