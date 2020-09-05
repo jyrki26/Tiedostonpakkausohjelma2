@@ -3,9 +3,13 @@ package Tiedostonpakkausohjelma.algorithms;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryConverter;
 import Tiedostonpakkausohjelma.tools.BinaryHeap;
-import java.io.IOException;
 import Tiedostonpakkausohjelma.tools.CharAmountsMap;
+import java.io.IOException;
 
+/**
+ * Luokka vastaa tiedoston pakkaamisesta.
+ *
+ */
 public class Huffman {
 
     private String text;

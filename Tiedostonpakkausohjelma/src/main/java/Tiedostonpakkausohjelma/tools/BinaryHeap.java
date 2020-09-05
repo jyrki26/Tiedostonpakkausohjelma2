@@ -31,7 +31,8 @@ public class BinaryHeap {
     }
     
     /**
-     * Metodi poistaa pienimmän, eli keon ensimmäisen solmun. Käytännössä solmu siirtyy viimeisestä solmusta ilmoittavan arvon last-ulkopuolelle.
+     * Metodi poistaa pienimmän, eli keon ensimmäisen solmun.
+     * Käytännössä solmu siirtyy viimeisestä solmusta ilmoittavan arvon last-ulkopuolelle.
      *
      * @return Pienin solmu.
      */

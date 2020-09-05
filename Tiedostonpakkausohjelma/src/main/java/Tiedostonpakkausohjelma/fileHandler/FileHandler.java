@@ -7,10 +7,13 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+/**
+ * Luokka vastaa tiedoston lukemisesta ja tiedostoon kirjoittamisesta.
+ *
+ */
 public class FileHandler {
 
     private File file;
@@ -62,19 +65,19 @@ public class FileHandler {
             System.out.println(ioe);
         }
     }
-    
-    public byte[] readBytes(String file) throws IOException{
+
+    public byte[] readBytes(String file) throws IOException {
         byte[] bytes = Files.readAllBytes(Paths.get(file));
         return bytes;
     }
-    
-    public String compressionRate(){
+
+    public String compressionRate() {
         long original = file.length();
         long compressed = b.length;
-        double rate = ((double)compressed / original) * 100;
-        String s = "Alkuperäinen koko: " + original + " tavua.\n"+
-                   "Pakattu koko: " + compressed + " tavua.\n" + 
-                   "Pakattu tiedosto on " + rate + " prosenttia alkuperäisestä.";
+        double rate = ((double) compressed / original) * 100;
+        String s = "Alkuperäinen koko: " + original + " tavua.\n"
+                + "Pakattu koko: " + compressed + " tavua.\n"
+                + "Pakattu tiedosto on " + rate + " prosenttia alkuperäisestä.";
         return s;
     }
 }

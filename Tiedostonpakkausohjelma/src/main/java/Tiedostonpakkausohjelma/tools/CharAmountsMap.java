@@ -64,7 +64,7 @@ public class CharAmountsMap {
     }
 
     /**
-     * Metodi laskee hajautusarvon
+     * Metodi laskee hajautusarvon.
      *
      * @param c Merkki jonka perusteella hajautusarvo lasketaan.
      *

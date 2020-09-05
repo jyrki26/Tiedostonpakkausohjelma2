@@ -110,5 +110,32 @@ public class CharAmountsTest {
         assertFalse(map.containsChar('A'));
         assertFalse(map.containsChar('ö'));
     }
+    
+    @Test
+    public void addNode(){
+        HashMapNode n = new HashMapNode('d', 1);
+        map.addChar(n);
+        assertTrue(map.containsChar('d'));
+    }
+    
+    @Test
+    public void addThirdSameHash(){
+        HashMapNode n = new HashMapNode(']', 1);
+        map.addChar(n);
+        assertTrue(map.containsChar(']'));
+    }
+    
+    @Test
+    public void increaseSizeWorks(){
+        for(int i = 0; i < 20; i++){
+            char c = (char) (65 + i);
+            HashMapNode n = new HashMapNode(c, 1);
+            map.addChar(n);
+        }
+        int hash = map.hash('!');
+        int hash2 = map.hash('?');
+        assertEquals(33, hash);
+        assertEquals(3, hash2);
+    }
 }
 

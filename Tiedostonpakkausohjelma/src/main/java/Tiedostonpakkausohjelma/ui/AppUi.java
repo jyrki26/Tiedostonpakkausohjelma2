@@ -4,10 +4,13 @@ import Tiedostonpakkausohjelma.algorithms.DecompressHuffman;
 import Tiedostonpakkausohjelma.algorithms.Huffman;
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Luokka vastaa käyttöliittymästä.
+ *
+ */
 public class AppUi {
 
     Scanner scanner;
@@ -29,7 +32,7 @@ public class AppUi {
         while (true) {
             try {
                 dialog();
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Valinta on virheellinen. Yritä uudestaan.");
             }
             if (number == 3) {
@@ -80,7 +83,7 @@ public class AppUi {
         } catch (NullPointerException e) {
             System.out.println("Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yritä uudestaan.");
             System.out.println(e);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

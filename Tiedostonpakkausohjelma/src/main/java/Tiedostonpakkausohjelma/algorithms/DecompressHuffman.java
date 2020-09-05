@@ -2,9 +2,7 @@ package Tiedostonpakkausohjelma.algorithms;
 
 import Tiedostonpakkausohjelma.fileHandler.FileHandler;
 import Tiedostonpakkausohjelma.tools.BinaryConverter;
-import Tiedostonpakkausohjelma.tools.CharAmountsMap;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Luokka vastaa pakatun tiedoston purkamisesta.
@@ -50,7 +48,7 @@ public class DecompressHuffman {
     public Node buildTree(String text, int i) {
         if (text.charAt(next) == '1') {
             Node n = new Node(0, text.charAt(next + 1));
-            next +=1;
+            next += 1;
             return n;
         } else {
             Node n = new Node(0, '\u0238');

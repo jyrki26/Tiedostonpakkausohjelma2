@@ -1,6 +1,9 @@
 package Tiedostonpakkausohjelma.algorithms;
 
-
+/**
+ * Luokka luo hajautustaulussa käytettävän olion.
+ *
+ */
 public class HashMapNode {
     public char key;
     public int value;

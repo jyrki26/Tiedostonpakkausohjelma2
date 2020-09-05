@@ -1,4 +1,3 @@
-
 package algorithmsTest;
 
 import Tiedostonpakkausohjelma.algorithms.Huffman;
@@ -17,46 +16,50 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
 public class HuffmanTest {
-    
+
     String s = "abbcccd.";
     Huffman huffman = new Huffman(new FileHandler(new File("test.txt")));
     BinaryHeap heap;
     CharAmountsMap map;
     Node first;
-    
+    Huffman testHuffman;
+    CharAmountsMap testMap;
+    BinaryHeap testHeap;
+    Node testFirst;
+
     public HuffmanTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         map = huffman.buildHashMap(s);
         heap = huffman.createNodes(map);
+        
     }
-    
+
     @After
     public void tearDown() {
     }
 
     @Test
-    public void charactersInValuesCorrect(){
+    public void charactersInValuesCorrect() {
         assertTrue(map.containsChar('a'));
         assertTrue(map.containsChar('.'));
         int i = map.keyset().length;
         assertEquals(5, i);
     }
-    
+
     @Test
-    public void amountOfCharactersInValuesCorrect(){
+    public void amountOfCharactersInValuesCorrect() {
         int a = 1;
         int b = map.getValue('a');
         assertEquals(a, b);
@@ -64,39 +67,30 @@ public class HuffmanTest {
         int d = map.getValue('c');
         assertEquals(c, d);
     }
-    
+
     @Test
-    public void amountOfNodesIsCorrect(){
+    public void amountOfNodesIsCorrect() {
         int s = heap.getLast();
         assertEquals(5, s);
     }
-    
+
     @Test
-    public void nodesAreFormedCorrectly(){
+    public void nodesAreFormedCorrectly() {
         Node node = heap.deleteMin();
         char c = node.getCharacter();
         assertEquals('a', c);
         int a = node.getNumber();
         assertEquals(1, a);
     }
-    
+
     @Test
-    public void firstFormedCorrectly(){
+    public void firstFormedCorrectly() {
         first = huffman.createTree(heap);
         char c = first.getCharacter();
         int i = first.getNumber();
-        
+
         assertEquals('\u0238', c);
         assertEquals(i, 8);
     }
-    
-    @Test
-    public void codesFormedCorrectly() throws IOException{
-        Huffman testHuffman = new Huffman(new FileHandler(new File("test.txt")));
-        testHuffman.startHuffman();
-        String bString = map.returnCode('b');
-        assertEquals("02", bString);
-    }
-    
-    
+
 }
