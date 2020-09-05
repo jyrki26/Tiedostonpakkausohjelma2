@@ -107,8 +107,9 @@ public class CharAmountsTest {
 
     @Test
     public void containsCharFalse() {
-        assertFalse(map.containsChar('A'));
-        assertFalse(map.containsChar('ö'));
+        assertFalse(map.containsChar('Å'));
+        assertFalse(map.containsChar('å'));
+        assertFalse(map.containsChar('{'));
     }
     
     @Test

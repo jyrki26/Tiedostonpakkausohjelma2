@@ -16,7 +16,7 @@ jar {
 
 jacoco {
     toolVersion = "0.8.5"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+    reportsDir = file("$buildDir/jacoco")
 }
 
 checkstyle {
