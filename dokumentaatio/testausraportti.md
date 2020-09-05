@@ -11,7 +11,7 @@ gradle test
 Yksikkötestaus on suoritettu kattavasti omille tietorakenteille ja ohjelman logiikasta vastaaville luokille. Testaus on suoritettu käyttäen JUnitin avulla luokkia testitapauksia. Yksikkötestauksessa on painotettu pakkauksessa tools olevien omien tietorakenteiden toimivuuden testausta.
 Lisäksi logiikasta vastaavaassa pakkauksessa algorithms olevia luokkia on testattu melko laajalti. Käyttöliittymää koskevaa pakettia ui ei ole testattu yksikkötestauksella, koska se ainoastaan antaa komennot aiemmin mainituille luokille. Alla testikattavuusraportti.
 
-![Testikattavuusraportti](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/testikattavuus.png
+![Testikattavuusraportti](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/testikattavuus.png)
 
 
 ### Suorituskykytestaus
@@ -21,6 +21,8 @@ Testauksessa on käytetty BBC:n avoimesti saatavilla olevia txt-muotoisia tiedos
 Vastaavasti on myös testattu pakkauksen viemää aikaa. Pakkaamisen viemä aika vaihtelee suuresti tiedoston mukaan,  keskimäärin ohjelma pakkaa noin 37 tavua sekunnissa, jos ohjelma on juuri käynnistetty. Jos ohjelma on ollut käynnissä pakkaa se kuitenkin noin 114 tavua sekunnissa. Tähän aikaan on laskettu mukaan tiedoston lukeminen ja tallentaminen, joten varsinaiseen pakkaamisen menevä aika on nopeampi. Ero pakkausaikojen keskiarvossa saattaa johtua siitä, että ohjelman ollessa käynnissä tiedosto on jo välimuistissa ja sen käsittelyyn menee näin ollen vähemmän aikaa. Tätä tukisi myös se, että testatessa tiedosto test4.txt oli eri kansiossa ja sen suoritusajat olivat molemmilla tavoilla hitaampia kuin muiden tiedostojen. 
 Tiedoston lopussa olevissa kuvaajissa on kuvattu pakkaukseen tarvittu aika yksikössä pakattuja tavuja sekunnissa. Kuvaajasta näkee selvästi kuinka huomattavat erot eri tiedostojen välillä. Tiedostot on kuvattu suuruus järjestyksessä niin, että 397.txt on pienin ja test4.txt on suurin.
 
+![Kuvaaja 1](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/chart1.png)
+![Kuvaaja 1](https://github.com/jyrki26/Tiedostonpakkausohjelma2/blob/master/dokumentaatio/chart2.png)
 
 ### Muu testaus
 
