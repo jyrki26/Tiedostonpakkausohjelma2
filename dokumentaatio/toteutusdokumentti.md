@@ -17,7 +17,7 @@ Tilavaatimus on O(n), jossa n on uniikkien merkkien lukumäärä, koska merkkien
 ### Puutteet ja parannusehdotukset
 Työn oli alunperin tarkoitus vertailla kahta tai useampaa pakkausalgoritmia. Lähdin toteuttamaan ohjelmaa niin, että sovellus tallentaa pakattavan tiedoston tekstimuodossa, joka aiheutti ongelmia, koska kaikki merkit eivät tallentuneet oikein. Tämän ongelman ratkaiseminen vei sen verran aikaa, että en ehtinyt toteuttaa toista algoritmia. Tässä on siis selvä puute. <br/>
 
-Ohjelman rakennetta voisi muutenkin parantaa. Koska ohjelma lukee pakattavan tiedoston tekstimuodossa, ei ohjelma joko toimi ollenkaan tai saattaa toimia virheellisesti muilla tiedostotyypeillä kuin txt. Tässä olisi siis selvä kehityskohde. Kurssin aihealueen ulkopuolella oleva kehityskohde olisi graafisen käyttöliittymän toteuttaminen. Vaikka ohjelma on nyt melko helpokäyttöinen, tekisi graafinen käyttöliittymä siitä yksinkertaisemman käyttää.
+Ohjelman rakennetta voisi muutenkin parantaa. Koska ohjelma lukee pakattavan tiedoston tekstimuodossa, ei ohjelma joko toimi ollenkaan tai saattaa toimia virheellisesti muilla tiedostotyypeillä kuin txt. Mikäli käsiteltäisiin koko ajan tavumuotoista dataa, ohjelma todennäköisesti toimisi myös muilla tiedostotyypeillä. Tässä olisi siis selvä kehityskohde. Kurssin aihealueen ulkopuolella oleva kehityskohde olisi graafisen käyttöliittymän toteuttaminen. Vaikka ohjelma on nyt melko helpokäyttöinen, tekisi graafinen käyttöliittymä siitä yksinkertaisemman käyttää.
 
 
 
