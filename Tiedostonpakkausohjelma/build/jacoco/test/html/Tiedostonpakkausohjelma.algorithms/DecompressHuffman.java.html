@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecompressHuffman.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.algorithms</a> &gt; <span class="el_source">DecompressHuffman.java</span></div><h1>DecompressHuffman.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.algorithms;
+
+import Tiedostonpakkausohjelma.fileHandler.FileHandler;
+import Tiedostonpakkausohjelma.tools.BinaryConverter;
+import java.io.IOException;
+
+/**
+ * Luokka vastaa pakatun tiedoston purkamisesta.
+ *
+ */
+public class DecompressHuffman {
+
+    FileHandler filehandler;
+    String file;
+<span class="fc" id="L15">    Node first = new Node(0, '\u0238');</span>
+<span class="fc" id="L16">    int next = 0;</span>
+    String convertedToBytes;
+    BinaryConverter bc;
+    String saveToFile;
+
+<span class="fc" id="L21">    public DecompressHuffman(String file, FileHandler filehandler) {</span>
+<span class="fc" id="L22">        this.filehandler = filehandler;</span>
+<span class="fc" id="L23">        this.file = file;</span>
+<span class="fc" id="L24">        bc = new BinaryConverter();</span>
+
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Metodi käynnistää tiedoston purun.
+     *
+     */
+    public void decompress() throws IOException {
+<span class="nc" id="L33">        byte[] bytes = filehandler.readBytes(file);</span>
+<span class="nc" id="L34">        String s = bc.byteToString(bytes);</span>
+<span class="nc" id="L35">        String str[] = s.split(&quot;22&quot;, 2);</span>
+<span class="nc" id="L36">        first = buildTree(str[0], next);</span>
+<span class="nc" id="L37">        saveToFile = recreateText(str[1]);</span>
+<span class="nc" id="L38">        filehandler.writeToFile(saveToFile, &quot;purettu.txt&quot;);</span>
+<span class="nc" id="L39">    }</span>
+
+    /**
+     * Metodi rakentaa binääripuun pakatun tiedoston alussa olevasta tekstistä.
+     *
+     * @param text Teksti, jonka perusteella puu muodostetaan.
+     * @param i Seuraavana käsiteltävä kirjain.
+     * @return Palauttaa puun ensimmäisen solmun.
+     */
+    public Node buildTree(String text, int i) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (text.charAt(next) == '1') {</span>
+<span class="fc" id="L50">            Node n = new Node(0, text.charAt(next + 1));</span>
+<span class="fc" id="L51">            next += 1;</span>
+<span class="fc" id="L52">            return n;</span>
+        } else {
+<span class="fc" id="L54">            Node n = new Node(0, '\u0238');</span>
+<span class="fc" id="L55">            n.setLeft(buildTree(text, codeReader(text)));</span>
+<span class="fc" id="L56">            n.setRight(buildTree(text, codeReader(text)));</span>
+<span class="fc" id="L57">            return n;</span>
+        }
+    }
+
+    /**
+     * Metodi määrittää mikä kirjain käsitellään seuraavaksi metodissa
+     * buildTree.
+     *
+     * @param code Teksti, jonka perusteella puu muodostetaan.
+     */
+    public int codeReader(String code) {
+<span class="fc" id="L68">        int i = next;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        while (i &lt; code.length()) {</span>
+<span class="fc" id="L70">            i++;</span>
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">            if (code.charAt(i) == '0' || code.charAt(i) == '1') {</span>
+<span class="fc" id="L72">                next = i;</span>
+<span class="fc" id="L73">                break;</span>
+            }
+        }
+<span class="fc" id="L76">        return next;</span>
+    }
+    
+    /**
+     * Metodi etsii puusta oikean merkin.
+     *
+     * @param node Ensimmäinen node.
+     * @param s Huffman-koodi.
+     * 
+     * @return Oikea merkki.
+     */
+    public char findChar(Node node, String s) {
+<span class="fc" id="L88">        Node n = node;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (int i = 0; i &lt; s.length(); i++) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            if (s.charAt(i) == '0') {</span>
+<span class="fc" id="L91">                n = n.getLeft();</span>
+            } else {
+<span class="fc" id="L93">                n = n.getRight();</span>
+            }
+        }
+<span class="fc" id="L96">        return n.getCharacter();</span>
+    }
+    
+    /**
+     * Metodi pilkkoo koodin paloihin ja hakee oikean merkin metodin findChar avulla.
+     *
+     * @param text Alkuperäinen koodi.
+     * 
+     * @return Alkuperäinen teksti.
+     */
+    public String recreateText(String text) {
+<span class="nc" id="L107">        String full = &quot;&quot;;</span>
+<span class="nc" id="L108">        String help = &quot;&quot;;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        for (int i = 0; i &lt; text.length(); i++) {</span>
+<span class="nc" id="L110">            help += text.charAt(i);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (findChar(first, help) != '\u0238') {</span>
+<span class="nc" id="L112">                full += findChar(first, help);</span>
+<span class="nc" id="L113">                help = &quot;&quot;;</span>
+            }
+        }
+<span class="nc" id="L116">        return full;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

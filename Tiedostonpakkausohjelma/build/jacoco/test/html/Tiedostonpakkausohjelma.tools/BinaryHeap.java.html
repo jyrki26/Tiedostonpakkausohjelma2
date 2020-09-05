@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryHeap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.tools</a> &gt; <span class="el_source">BinaryHeap.java</span></div><h1>BinaryHeap.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.tools;
+
+import Tiedostonpakkausohjelma.algorithms.Node;
+
+/**
+ * Luokka toteuttaa binäärikeon sovelluksessa tarvittavilta osin.
+ */
+public class BinaryHeap {
+
+    Node[] nodes;
+    private int last;
+
+<span class="fc" id="L13">    public BinaryHeap(Node[] nodes) {</span>
+<span class="fc" id="L14">        this.nodes = nodes;</span>
+<span class="fc" id="L15">        this.last = 0;</span>
+<span class="fc" id="L16">    }</span>
+    
+    /**
+     * Metodi lisää kekoon uuden solmun ja toteuttaa samalla kekoehdon säilymisen.
+     *
+     * @param node Lisättävä solmu.
+     */
+    public void insert(Node node) {
+<span class="fc" id="L24">        last += 1;</span>
+<span class="fc" id="L25">        int p = last;</span>
+<span class="fc bfc" id="L26" title="All 4 branches covered.">        while (p &gt; 1 &amp;&amp; node.getNumber() &lt; nodes[parent(p)].getNumber()) {</span>
+<span class="fc" id="L27">            nodes[p] = nodes[parent(p)];</span>
+<span class="fc" id="L28">            p = parent(p);</span>
+        }
+<span class="fc" id="L30">        nodes[p] = node;</span>
+<span class="fc" id="L31">    }</span>
+    
+    /**
+     * Metodi poistaa pienimmän, eli keon ensimmäisen solmun.
+     * Käytännössä solmu siirtyy viimeisestä solmusta ilmoittavan arvon last-ulkopuolelle.
+     *
+     * @return Pienin solmu.
+     */
+    
+    public Node deleteMin() {
+<span class="fc" id="L41">        Node first = nodes[1];</span>
+<span class="fc" id="L42">        nodes[1] = nodes[last];</span>
+<span class="fc" id="L43">        last -= 1;</span>
+<span class="fc" id="L44">        pushDown(1);</span>
+<span class="fc" id="L45">        return first;</span>
+    }
+    
+    
+    /**
+     * Metodi laskee keossa ensimmäiseksi nostetun viimeisen solmun oikealle paikalle.
+     *
+     * @param s Solmun sijainti keossa.
+     */
+    private void pushDown(int node) {
+        int smaller;
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (left(node) &gt; last) {</span>
+<span class="fc" id="L57">            return;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        } else if (left(node) == last) {</span>
+<span class="fc" id="L59">            smaller = left(node);</span>
+        } else {
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">            if (nodes[left(node)].getNumber() &lt; nodes[right(node)].getNumber()) {</span>
+<span class="fc" id="L62">                smaller = left(node);</span>
+            } else {
+<span class="nc" id="L64">                smaller = right(node);</span>
+            }
+        }
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (nodes[node].getNumber() &gt; nodes[smaller].getNumber()) {</span>
+<span class="fc" id="L68">            change(node, smaller);</span>
+<span class="fc" id="L69">            pushDown(smaller);</span>
+        }
+<span class="fc" id="L71">    }</span>
+    
+    /**
+     * Metodi laskee solmun vanhemman.
+     * 
+     * @param position Solmun sijainti.
+     */
+    private int parent(int position) {
+<span class="fc" id="L79">        return position / 2;</span>
+    }
+    
+    /**
+     * Metodi laskee solmun vasemman lapsen.
+     * 
+     * @param position Solmun sijainti.
+     */
+    private int left(int position) {
+<span class="fc" id="L88">        return 2 * position;</span>
+    }
+    
+    /**
+     * Metodi laskee oikean lapsen.
+     * 
+     * @param position Solmun sijainti.
+     */
+    private int right(int position) {
+<span class="fc" id="L97">        return 2 * position + 1;</span>
+    }
+    
+    /**
+     * Metodi vaihtaa kahden solmun paikat.
+     * 
+     * @param first Ensimmäisen vaihdettavan solmun sijainti.
+     * @param second Toisen vaihdettavan solmun sijainti.
+     */
+    private void change(int first, int second) {
+<span class="fc" id="L107">        Node temp = nodes[first];</span>
+<span class="fc" id="L108">        nodes[first] = nodes[second];</span>
+<span class="fc" id="L109">        nodes[second] = temp;</span>
+<span class="fc" id="L110">    }</span>
+    
+    /**
+     * Metodi palauttaa viimeisen solmun arvon ja samalla keon koon.
+     * 
+     * @return Nodejen määrä keossa.
+     */
+    public int getLast() {
+<span class="fc" id="L118">        return last;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

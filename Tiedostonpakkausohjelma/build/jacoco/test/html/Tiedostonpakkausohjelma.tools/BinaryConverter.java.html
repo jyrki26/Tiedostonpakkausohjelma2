@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinaryConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.tools</a> &gt; <span class="el_source">BinaryConverter.java</span></div><h1>BinaryConverter.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.tools;
+
+/**
+ * Luokka vastaa merkkien muuttamisesta binäärimuotoon.
+ *
+ */
+<span class="fc" id="L7">public class BinaryConverter {</span>
+
+    public byte stringToByte(String s) {
+<span class="fc" id="L10">        byte b = (byte) Integer.parseInt(s, 2);</span>
+<span class="fc" id="L11">        return b;</span>
+    }
+
+    public int splitBytes(byte[] b) {
+<span class="fc" id="L15">        Integer two = 50;</span>
+<span class="fc" id="L16">        int split = 0;</span>
+<span class="fc" id="L17">        int counter = 0;</span>
+<span class="fc" id="L18">        int counter2 = 1;</span>
+<span class="fc" id="L19">        byte b1 = two.byteValue();</span>
+        while (true) {
+<span class="fc bfc" id="L21" title="All 4 branches covered.">            if (b[counter] == b1 &amp;&amp; b[counter2] == b1) {</span>
+<span class="fc" id="L22">                split = counter;</span>
+<span class="fc" id="L23">                break;</span>
+            }
+<span class="fc" id="L25">            counter++;</span>
+<span class="fc" id="L26">            counter2++;</span>
+        }
+<span class="fc" id="L28">        return split;</span>
+    }
+
+    public String convertBytes(byte[] b) {
+<span class="fc" id="L32">        String s = new String(b);</span>
+<span class="fc" id="L33">        return s;</span>
+    }
+
+    public String byteToString(byte[] bytes) {
+<span class="fc" id="L37">        int split = splitBytes(bytes);</span>
+<span class="fc" id="L38">        String str = &quot;&quot;;</span>
+<span class="fc" id="L39">        byte[] b = new byte[split + 2];</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (int i = 0; i &lt; split + 2; i++) {</span>
+<span class="fc" id="L41">            b[i] = bytes[i];</span>
+        }
+<span class="fc" id="L43">        str += convertBytes(b);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (int i = split + 2; i &lt; bytes.length - 1; i++) {</span>
+<span class="fc" id="L45">            String s1 = String.format(&quot;%8s&quot;, Integer.toBinaryString(bytes[i] &amp; 0xFF)).replace(' ', '0');</span>
+<span class="fc" id="L46">            str += s1;</span>
+        }
+<span class="fc" id="L48">        String s2 = String.format(&quot;%8s&quot;, Integer.toBinaryString(bytes[bytes.length - 1] &amp; 0xFF)).replace(' ', '0');</span>
+<span class="fc" id="L49">        int i = 0;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        while (i &lt; s2.length()) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (s2.charAt(i) == '1') {</span>
+<span class="fc" id="L52">                break;</span>
+            }
+<span class="fc" id="L54">            i++;</span>
+        }
+        String s3;
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (i &lt; 8) {</span>
+<span class="fc" id="L58">            s3 = s2.substring(i + 1, s2.length());</span>
+        } else {
+<span class="fc" id="L60">            s3 = s2;</span>
+        }
+<span class="fc" id="L62">        str += s3;</span>
+<span class="fc" id="L63">        return str;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

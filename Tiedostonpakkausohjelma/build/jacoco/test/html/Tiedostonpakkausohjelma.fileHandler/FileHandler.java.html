@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.fileHandler</a> &gt; <span class="el_source">FileHandler.java</span></div><h1>FileHandler.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.fileHandler;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
+/**
+ * Luokka vastaa tiedoston lukemisesta ja tiedostoon kirjoittamisesta.
+ *
+ */
+public class FileHandler {
+
+    private File file;
+    private byte[] b;
+
+<span class="fc" id="L22">    public FileHandler(File file) {</span>
+<span class="fc" id="L23">        this.file = file;</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Metodi lukee tiedoston, joka halutaan pakata.
+     *
+     * @return Luettu tiedosto String-muodossa.
+     *
+     */
+    public String read() {
+<span class="nc" id="L33">        String text = &quot;&quot;;</span>
+        try {
+<span class="nc" id="L35">            Scanner scanner = new Scanner(file);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            while (scanner.hasNextLine()) {</span>
+<span class="nc" id="L37">                String line = scanner.nextLine();</span>
+<span class="nc" id="L38">                text = text + line + &quot;\n&quot;;</span>
+<span class="nc" id="L39">            }</span>
+<span class="nc" id="L40">            scanner.close();</span>
+
+<span class="nc" id="L42">        } catch (FileNotFoundException ex) {</span>
+<span class="nc" id="L43">            System.out.println(ex);</span>
+<span class="nc" id="L44">        }</span>
+<span class="nc" id="L45">        String correct = text.substring(0, text.length() - 1);</span>
+<span class="nc" id="L46">        return correct;</span>
+    }
+
+    public void writeToFile(String text, String fileName) throws IOException {
+<span class="nc" id="L50">        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {</span>
+<span class="nc" id="L51">            writer.write(text);</span>
+<span class="nc" id="L52">            System.out.println(&quot;Tallennus onnistui.&quot;);</span>
+<span class="nc" id="L53">            writer.close();</span>
+<span class="nc" id="L54">        } catch (Exception e) {</span>
+<span class="nc" id="L55">            System.out.println(&quot;Tallennus epäonnistui. &quot; + e);</span>
+<span class="nc" id="L56">        }</span>
+
+<span class="nc" id="L58">    }</span>
+
+    public void writeBytes(String filename, byte[] bytes) {
+<span class="nc" id="L61">        b = bytes;</span>
+<span class="nc" id="L62">        try (FileOutputStream fos = new FileOutputStream(filename)) {</span>
+<span class="nc" id="L63">            fos.write(bytes);</span>
+<span class="nc" id="L64">        } catch (IOException ioe) {</span>
+<span class="nc" id="L65">            System.out.println(ioe);</span>
+<span class="nc" id="L66">        }</span>
+<span class="nc" id="L67">    }</span>
+
+    public byte[] readBytes(String file) throws IOException {
+<span class="nc" id="L70">        byte[] bytes = Files.readAllBytes(Paths.get(file));</span>
+<span class="nc" id="L71">        return bytes;</span>
+    }
+
+    public String compressionRate() {
+<span class="nc" id="L75">        long original = file.length();</span>
+<span class="nc" id="L76">        long compressed = b.length;</span>
+<span class="nc" id="L77">        double rate = ((double) compressed / original) * 100;</span>
+<span class="nc" id="L78">        String s = &quot;Alkuperäinen koko: &quot; + original + &quot; tavua.\n&quot;</span>
+                + &quot;Pakattu koko: &quot; + compressed + &quot; tavua.\n&quot;
+                + &quot;Pakattu tiedosto on &quot; + rate + &quot; prosenttia alkuperäisestä.&quot;;
+<span class="nc" id="L81">        return s;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

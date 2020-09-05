@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CharAmountsMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.tools</a> &gt; <span class="el_source">CharAmountsMap.java</span></div><h1>CharAmountsMap.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.tools;
+
+import Tiedostonpakkausohjelma.algorithms.HashMapNode;
+
+/**
+ * Luokka luo sovelletun hajautustaulun, jossa avaimena toimii char.
+ * Ensimmäisenä saman hajautusarvon saava node lisätään taulukkoon hajautusarvon
+ * kohdalle ja loput saman hajautusarvon saavat linkitetään siihen. Avaimen
+ * perusteella voidaan hakea joko merkkien määrä alkuperäisessä tiedostossa tai
+ * Huffamanin-koodi.
+ *
+ */
+public class CharAmountsMap {
+
+    HashMapNode[] map;
+    private int size;
+    private int nodes;
+
+<span class="fc" id="L19">    public CharAmountsMap() {</span>
+<span class="fc" id="L20">        this.map = new HashMapNode[30];</span>
+<span class="fc" id="L21">        this.size = 30;</span>
+<span class="fc" id="L22">        this.nodes = 0;</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * Metodi lisää uuden avaintietoparin hajautustauluun.
+     *
+     * @param node Solmu.
+     */
+    public void addChar(HashMapNode node) {
+<span class="fc" id="L31">        int s = hash(node.getKey());</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (map[s] == null) {</span>
+<span class="fc" id="L34">            map[s] = node;</span>
+<span class="fc" id="L35">            nodes++;</span>
+        } else {
+<span class="fc" id="L37">            addNode(map[s], node);</span>
+        }
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (nodes &gt; size * 3 / 4) {</span>
+<span class="fc" id="L41">            increaseSize();</span>
+        }
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Metodia avulla tarkastetaan onko jo saman avaimen omaavaa avaintietoparia
+     * hajautustaulussa.
+     *
+     * @param node Hajautustaulussa oleva avaintietopari.
+     * @param hmn Uusi avaintietopari.
+     */
+    private void addNode(HashMapNode node, HashMapNode hmn) {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (node.getKey() == hmn.getKey()) {</span>
+<span class="fc" id="L54">            int value = hmn.getValue();</span>
+<span class="fc" id="L55">            node.setValue(value);</span>
+<span class="fc" id="L56">            return;</span>
+        }
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (node.getNext() == null) {</span>
+<span class="fc" id="L59">            node.setNext(hmn);</span>
+<span class="fc" id="L60">            nodes++;</span>
+        } else {
+<span class="fc" id="L62">            addNode(node.getNext(), hmn);</span>
+        }
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Metodi laskee hajautusarvon.
+     *
+     * @param c Merkki jonka perusteella hajautusarvo lasketaan.
+     *
+     * @return Hajautusarvo
+     */
+    public int hash(char c) {
+<span class="fc" id="L74">        int i = (int) c;</span>
+<span class="fc" id="L75">        int hash = (i + size) % size;</span>
+<span class="fc" id="L76">        return hash;</span>
+    }
+
+    /**
+     * Metodi kasvattaa taulukon koon kaksinkertaiseksi ja laskee uudet
+     * hajautusarvot, jos vähintään avaintietopareja on vähintään 3/4 taulukon
+     * koosta.
+     */
+    private void increaseSize() {
+<span class="fc" id="L85">        HashMapNode temp[] = map;</span>
+<span class="fc" id="L86">        map = new HashMapNode[2 * size];</span>
+<span class="fc" id="L87">        int newSize = 2 * size;</span>
+<span class="fc" id="L88">        size = newSize;</span>
+<span class="fc" id="L89">        nodes = 0;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (int i = 0; i &lt; temp.length; i++) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (temp[i] != null) {</span>
+<span class="fc" id="L92">                HashMapNode n = temp[i];</span>
+<span class="fc" id="L93">                HashMapNode nod = new HashMapNode(n.getKey(), n.getValue());</span>
+<span class="fc" id="L94">                addChar(nod);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                while (n.getNext() != null) {</span>
+<span class="fc" id="L96">                    n = n.getNext();</span>
+<span class="fc" id="L97">                    nod = new HashMapNode(n.getKey(), n.getValue());</span>
+<span class="fc" id="L98">                    addChar(nod);</span>
+                }
+            }
+        }
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Metodi ilmoittaa sisältääkö hajautustaulu jotakin avainta.
+     *
+     * @param c Avain.
+     *
+     * @return Boolean-arvo.
+     */
+    public boolean containsChar(char c) {
+<span class="fc" id="L112">        int i = hash(c);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (map[i] == null) {</span>
+<span class="fc" id="L114">            return false;</span>
+        }
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        return search(map[i], c) != null;</span>
+    }
+
+    /**
+     * Metodi palauttaa avaimen perusteella arvon.
+     *
+     * @param c Avain.
+     *
+     * @return Arvo.
+     */
+    public int getValue(char c) {
+<span class="fc" id="L127">        int i = hash(c);</span>
+<span class="fc" id="L128">        return search(map[i], c).value;</span>
+    }
+
+    /**
+     * Metodi palauttaa hajautustaulun kaikki avaimet.
+     *
+     * @return Avaimet taulukkona..
+     */
+    public char[] keyset() {
+<span class="fc" id="L137">        char[] c = new char[nodes];</span>
+<span class="fc" id="L138">        int chars = 0;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        for (int i = 0; i &lt; map.length; i++) {</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            if (map[i] != null) {</span>
+<span class="fc" id="L141">                HashMapNode n = map[i];</span>
+<span class="fc" id="L142">                c[chars] = n.getKey();</span>
+<span class="fc" id="L143">                chars++;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                while (n.getNext() != null) {</span>
+<span class="fc" id="L145">                    n = n.getNext();</span>
+<span class="fc" id="L146">                    c[chars] = n.getKey();</span>
+<span class="fc" id="L147">                    chars++;</span>
+                }
+            }
+        }
+<span class="fc" id="L151">        return c;</span>
+    }
+
+    /**
+     * Metodi avulla lisätään nodelle Huffman-koodissa käytettävä koodi.
+     *
+     * @param c Avaimena käytettävä merkki.
+     * @param code Koodi, joka lisätään.
+     *
+     */
+    public void addCode(char c, String code) {
+<span class="fc" id="L162">        int i = hash(c);</span>
+<span class="fc" id="L163">        search(map[i], c).setCode(code);</span>
+<span class="fc" id="L164">    }</span>
+
+    /**
+     * Metodi palauttaa koodin merkin perusteella.
+     *
+     * @param c Avain.
+     *
+     * @return Koodi.
+     */
+    public String returnCode(char c) {
+<span class="fc" id="L174">        int i = hash(c);</span>
+<span class="fc" id="L175">        return search(map[i], c).getCode();</span>
+    }
+
+    /**
+     * Metodi etsii noden taulukon tietystä kohdasta.
+     *
+     * @param node Taulukon tietyssä kohdassa oleva node.
+     * @param key Avain, jota etsitään.
+     *
+     * @return Etsittävä node.
+     */
+    public HashMapNode search(HashMapNode node, char key) {
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        if (node.getKey() == key) {</span>
+<span class="fc" id="L188">            return node;</span>
+        }
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (node.getNext() != null) {</span>
+<span class="fc" id="L191">            return search(node.getNext(), key);</span>
+        }
+<span class="fc" id="L193">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class HuffmanTest {
 
     String s = "abbcccd.";
-    Huffman huffman = new Huffman(new FileHandler(new File("test.txt")));
+    Huffman huffman = new Huffman(new FileHandler(new File("test.txt")), "pakattu.txt");
     BinaryHeap heap;
     CharAmountsMap map;
     Node first;

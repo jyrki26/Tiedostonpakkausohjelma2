@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppUi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.ui</a> &gt; <span class="el_source">AppUi.java</span></div><h1>AppUi.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.ui;
+
+import Tiedostonpakkausohjelma.algorithms.DecompressHuffman;
+import Tiedostonpakkausohjelma.algorithms.Huffman;
+import Tiedostonpakkausohjelma.fileHandler.FileHandler;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+/**
+ * Luokka vastaa käyttöliittymästä.
+ *
+ */
+public class AppUi {
+
+    Scanner scanner;
+    File file;
+    FileHandler filereader;
+    int number;
+
+<span class="nc" id="L21">    public AppUi() {</span>
+<span class="nc" id="L22">        scanner = new Scanner(System.in);</span>
+<span class="nc" id="L23">    }</span>
+
+    /**
+     * Metodi käynnistää ohjelman käyttöliittymän.
+     *
+     * @throws java.io.IOException
+     */
+    public void start() throws IOException {
+<span class="nc" id="L31">        System.out.println(&quot;Käynnissä&quot;);</span>
+        while (true) {
+            try {
+<span class="nc" id="L34">                dialog();</span>
+<span class="nc" id="L35">            } catch (NumberFormatException e) {</span>
+<span class="nc" id="L36">                System.out.println(&quot;Valinta on virheellinen. Yritä uudestaan.&quot;);</span>
+<span class="nc" id="L37">            }</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (number == 3) {</span>
+<span class="nc" id="L39">                System.out.println(&quot;Ohjelma sammutettu.&quot;);</span>
+<span class="nc" id="L40">                break;</span>
+            } else {
+            }
+        }
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Metodi käynnistää käyttöliittymän dialogin, jossa valitaan mitä halutaan
+     * tehdä.
+     *
+     */
+    void dialog() throws IOException {
+<span class="nc" id="L52">        System.out.println(&quot;Paina 1 + ENTER, jos haluat pakata tiedoston&quot;);</span>
+<span class="nc" id="L53">        System.out.println(&quot;Paina 2 + ENTER, jos haluat purkaa tiedoston&quot;);</span>
+<span class="nc" id="L54">        System.out.println(&quot;Paina 3 + ENTER, jos haluat lopettaa&quot;);</span>
+<span class="nc" id="L55">        System.out.println(&quot;Anna valinta: &quot;);</span>
+<span class="nc" id="L56">        number = Integer.parseInt(scanner.nextLine());</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (number == 1) {</span>
+<span class="nc" id="L58">            compressHuffman();</span>
+        }
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (number == 2) {</span>
+<span class="nc" id="L61">            decompressHuffman();</span>
+        }
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * Metodi käynnistää tiedoston pakkauksen Huffmanin algoritmilla.
+     *
+     */
+    void compressHuffman() throws IOException {
+<span class="nc" id="L70">        System.out.println(&quot;Anna pakattavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki &quot;);</span>
+<span class="nc" id="L71">        file = new File(scanner.nextLine());</span>
+<span class="nc" id="L72">        long startTime = System.currentTimeMillis();</span>
+<span class="nc" id="L73">        filereader = new FileHandler(file);</span>
+<span class="nc" id="L74">        Huffman huffman = new Huffman(filereader);</span>
+        try {
+<span class="nc" id="L76">            huffman.startHuffman();</span>
+<span class="nc" id="L77">            long endTime = System.currentTimeMillis() - startTime;</span>
+<span class="nc" id="L78">            System.out.println(&quot;Aikaa pakkaamiseen kului: &quot; + endTime + &quot; millisekuntia&quot;);</span>
+<span class="nc" id="L79">            System.out.println(filereader.compressionRate());</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            System.out.println(&quot;Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yritä uudestaan.&quot;);</span>
+<span class="nc" id="L82">            System.out.println(e);</span>
+<span class="nc" id="L83">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L84">            System.out.println(&quot;Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yritä uudestaan.&quot;);</span>
+<span class="nc" id="L85">            System.out.println(e);</span>
+<span class="nc" id="L86">        } catch (Exception e) {</span>
+<span class="nc" id="L87">            System.out.println(e);</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Metodi käynnistää Huffmanin algoritmilla pakatun tiedoston purkamisen.
+     *
+     */
+    void decompressHuffman() throws IOException {
+<span class="nc" id="L96">        System.out.println(&quot;Anna purettavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki &quot;);</span>
+<span class="nc" id="L97">        String text = scanner.nextLine();</span>
+<span class="nc" id="L98">        long startTime = System.currentTimeMillis();</span>
+<span class="nc" id="L99">        file = new File(text);</span>
+<span class="nc" id="L100">        filereader = new FileHandler(file);</span>
+<span class="nc" id="L101">        DecompressHuffman decompress = new DecompressHuffman(text, filereader);</span>
+        try {
+<span class="nc" id="L103">            decompress.decompress();</span>
+<span class="nc" id="L104">            long endTime = System.currentTimeMillis() - startTime;</span>
+<span class="nc" id="L105">            System.out.println(&quot;Aikaa purkamiseen meni: &quot; + endTime + &quot; millisekuntia&quot;);</span>
+<span class="nc" id="L106">        } catch (IOException e) {</span>
+<span class="nc" id="L107">            System.out.println(&quot;Tiedoston luku ei onnistunut. Tarkista tiedoston nimi ja yritä uudestaan.&quot;);</span>
+<span class="nc" id="L108">        } catch (Exception e) {</span>
+<span class="nc" id="L109">        }</span>
+<span class="nc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

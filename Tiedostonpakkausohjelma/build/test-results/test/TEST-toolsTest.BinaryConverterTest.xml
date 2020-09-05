@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="toolsTest.BinaryConverterTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-09-05T08:37:59" hostname="lx8-fuxi135" time="0.032">
+  <properties/>
+  <testcase name="generateStringTest" classname="toolsTest.BinaryConverterTest" time="0.028"/>
+  <testcase name="byteArraySplit" classname="toolsTest.BinaryConverterTest" time="0.0"/>
+  <testcase name="stringConvertedCorrectly" classname="toolsTest.BinaryConverterTest" time="0.0"/>
+  <testcase name="lastByteZero" classname="toolsTest.BinaryConverterTest" time="0.0"/>
+  <testcase name="convertBytes" classname="toolsTest.BinaryConverterTest" time="0.002"/>
+  <system-out><![CDATA[2Ho
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

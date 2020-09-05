@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Huffman.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Tiedostonpakkausohjelma</a> &gt; <a href="index.source.html" class="el_package">Tiedostonpakkausohjelma.algorithms</a> &gt; <span class="el_source">Huffman.java</span></div><h1>Huffman.java</h1><pre class="source lang-java linenums">package Tiedostonpakkausohjelma.algorithms;
+
+import Tiedostonpakkausohjelma.fileHandler.FileHandler;
+import Tiedostonpakkausohjelma.tools.BinaryConverter;
+import Tiedostonpakkausohjelma.tools.BinaryHeap;
+import Tiedostonpakkausohjelma.tools.CharAmountsMap;
+import java.io.IOException;
+
+/**
+ * Luokka vastaa tiedoston pakkaamisesta.
+ *
+ */
+public class Huffman {
+
+    private String text;
+    private byte[] bytes;
+    private Node first;
+    private String code;
+    private BinaryConverter bc;
+    private FileHandler filehandler;
+    private CharAmountsMap amounts;
+<span class="fc" id="L22">    String decompressor = &quot;&quot;;</span>
+    private int charAmount;
+    private BinaryHeap heap;
+
+<span class="fc" id="L26">    public Huffman(FileHandler filehandler) {</span>
+<span class="fc" id="L27">        this.filehandler = filehandler;</span>
+<span class="fc" id="L28">        code = &quot;&quot;;</span>
+<span class="fc" id="L29">        bc = new BinaryConverter();</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * Metodi käy String-muotoon muutetun tiedoston läpi ja laskee
+     * hajautustaulun avulla eri merkkien lukumäärän.
+     *
+     */
+    public void startHuffman() throws IOException {
+<span class="nc" id="L38">        text = filehandler.read();</span>
+<span class="nc" id="L39">        amounts = buildHashMap(text);</span>
+<span class="nc" id="L40">        heap = createNodes(amounts);</span>
+<span class="nc" id="L41">        createTree(heap);</span>
+<span class="nc" id="L42">        createCode(first, &quot;&quot;);</span>
+<span class="nc" id="L43">        compress();</span>
+<span class="nc" id="L44">        biteDivider();</span>
+
+<span class="nc" id="L46">    }</span>
+
+    /**
+     * Metodi laskee pakattavassa tiedostossa olevan merkkien määrän ja
+     * sijoittaa ne hajautustauluun.
+     *
+     * @param s Pakattavan tiedoston sisältämän teksti String-muodossa.
+     *
+     * @return Hajautustaulu, jossa kirjaimien määrät on laskettu.
+     */
+    public CharAmountsMap buildHashMap(String s) {
+<span class="fc" id="L57">        CharAmountsMap map = new CharAmountsMap();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (int i = 0; i &lt; s.length(); i++) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (!map.containsChar(s.charAt(i))) {</span>
+<span class="fc" id="L60">                map.addChar(new HashMapNode(s.charAt(i), 1));</span>
+            } else {
+<span class="fc" id="L62">                int value = map.getValue(s.charAt(i));</span>
+<span class="fc" id="L63">                map.addChar(new HashMapNode(s.charAt(i), value + 1));</span>
+            }
+        }
+
+<span class="fc" id="L67">        return map;</span>
+    }
+
+    /**
+     * Metodi muodostaa hajautustaulun tiedoista Nodet.
+     *
+     * @param map Hajautustaulu.
+     *
+     * @return Prioriteettijono, jossa Nodet ovat.
+     */
+    public BinaryHeap createNodes(CharAmountsMap map) {
+<span class="fc" id="L78">        char[] chars = map.keyset();</span>
+<span class="fc" id="L79">        charAmount = chars.length;</span>
+<span class="fc" id="L80">        BinaryHeap bh = new BinaryHeap(new Node[charAmount * 2]);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (int i = 0; i &lt; chars.length; i++) {</span>
+<span class="fc" id="L82">            bh.insert(new Node(map.getValue(chars[i]), chars[i]));</span>
+        }
+<span class="fc" id="L84">        return bh;</span>
+    }
+
+    /**
+     * Metodi rakentaa Nodeista Huffman-puun.
+     *
+     * @param bh Prioriteettijono, jossa Nodet ovat.
+     *
+     * @return Puun ensimmäisen Noden.
+     */
+    public Node createTree(BinaryHeap bh) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        while (bh.getLast() &gt; 1) {</span>
+<span class="fc" id="L96">            Node a = bh.deleteMin();</span>
+<span class="fc" id="L97">            Node b = bh.deleteMin();</span>
+
+<span class="fc" id="L99">            int x = a.getNumber() + b.getNumber();</span>
+
+<span class="fc" id="L101">            Node n = new Node(x, '\u0238');</span>
+<span class="fc" id="L102">            n.setLeft(a);</span>
+<span class="fc" id="L103">            n.setRight(b);</span>
+
+<span class="fc" id="L105">            first = n;</span>
+<span class="fc" id="L106">            bh.insert(n);</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">        return first;</span>
+    }
+
+    /**
+     * Metodi laskee puusta koodin jokaiselle merkille ja tallentaa ne
+     * hashmappiin.
+     *
+     * @param node solmu, jolle metodi laskee arvon
+     * @param s string, joka kasvaa puuta alaspäin liikuttaessa
+     */
+    public void createCode(Node node, String s) {
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (node.getCharacter() == '\u0238') {</span>
+<span class="nc" id="L120">            decompressor += &quot;0&quot;;</span>
+        } else {
+<span class="nc" id="L122">            decompressor += &quot;1&quot; + Character.toString(node.getCharacter());</span>
+        }
+<span class="nc bnc" id="L124" title="All 6 branches missed.">        if (node.getLeft() == null &amp;&amp; node.getRight() == null &amp;&amp; node.getCharacter() != '\u0238') {</span>
+<span class="nc" id="L125">            amounts.addCode(node.getCharacter(), s);</span>
+<span class="nc" id="L126">            return;</span>
+        }
+
+<span class="nc" id="L129">        createCode(node.getLeft(), s + &quot;0&quot;);</span>
+<span class="nc" id="L130">        createCode(node.getRight(), s + &quot;1&quot;);</span>
+
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * Metodi käy tekstin läpi ja muuntaa jokaisen kirjaimen koodiksi.
+     *
+     */
+    public void compress() {
+<span class="nc" id="L139">        String s = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (int i = 0; i &lt; text.length(); i++) {</span>
+<span class="nc" id="L142">            char c = text.charAt(i);</span>
+<span class="nc" id="L143">            s = amounts.returnCode(c);</span>
+<span class="nc" id="L144">            code += s;</span>
+        }
+<span class="nc" id="L146">    }</span>
+
+    public void biteDivider() {
+<span class="nc" id="L149">        decompressor += &quot;22&quot;;</span>
+<span class="nc" id="L150">        byte[] b = decompressor.getBytes();</span>
+        int numberOfBytes;
+<span class="nc" id="L152">        numberOfBytes = code.length() / 8 + 1 + b.length;</span>
+
+<span class="nc" id="L154">        bytes = new byte[numberOfBytes];</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        for (int i = 0; i &lt; b.length; i++) {</span>
+<span class="nc" id="L156">            bytes[i] = b[i];</span>
+        }
+<span class="nc" id="L158">        int y = 0;</span>
+<span class="nc" id="L159">        int x = 0;</span>
+<span class="nc" id="L160">        int number = b.length;</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (int i = 0; i &lt; code.length(); i++) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (y == 8) {</span>
+<span class="nc" id="L164">                String s = code.substring(x, i);</span>
+<span class="nc" id="L165">                bytes[number] = bc.stringToByte(s);</span>
+<span class="nc" id="L166">                x = i;</span>
+<span class="nc" id="L167">                y = 0;</span>
+<span class="nc" id="L168">                number++;</span>
+            }
+<span class="nc" id="L170">            y++;</span>
+        }
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (code.length() % 8 != 0) {</span>
+<span class="nc" id="L174">            bytes[number] = bc.stringToByte(&quot;1&quot; + code.substring(x, code.length()));</span>
+        } else {
+<span class="nc" id="L176">            bytes[number] = bc.stringToByte(&quot;00000001&quot;);</span>
+        }
+
+<span class="nc" id="L179">        filehandler.writeBytes(&quot;bitit&quot;, bytes);</span>
+<span class="nc" id="L180">        System.out.println(&quot;Pakkaus onnistui.&quot;);</span>
+<span class="nc" id="L181">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

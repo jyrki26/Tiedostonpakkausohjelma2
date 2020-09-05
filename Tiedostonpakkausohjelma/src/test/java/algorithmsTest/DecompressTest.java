@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class DecompressTest {
     
-    DecompressHuffman decompress = new DecompressHuffman("testFile",new FileHandler(new File("testFile")));
+    DecompressHuffman decompress = new DecompressHuffman("testFile",new FileHandler(new File("testFile")), "purettu.txt");
     String s;
     Node first;
     String s2;
@@ -36,7 +36,7 @@ public class DecompressTest {
     public void setUp() {
         s = "01b01a1c";
         first = decompress.buildTree(s, 0);
-        decompress = new DecompressHuffman("testFile",new FileHandler(new File("testFile")));
+        decompress = new DecompressHuffman("testFile",new FileHandler(new File("testFile")), "purettu.txt");
         s2 = "0110101c";
         second = decompress.buildTree(s2, 0);
     }
