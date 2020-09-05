@@ -22,10 +22,12 @@ public class Huffman {
     String decompressor = "";
     private int charAmount;
     private BinaryHeap heap;
+    private String name;
 
-    public Huffman(FileHandler filehandler) {
+    public Huffman(FileHandler filehandler, String name) {
         this.filehandler = filehandler;
         code = "";
+        this.name = name;
         bc = new BinaryConverter();
     }
 
@@ -176,7 +178,7 @@ public class Huffman {
             bytes[number] = bc.stringToByte("00000001");
         }
 
-        filehandler.writeBytes("bitit", bytes);
+        filehandler.writeBytes(name, bytes);
         System.out.println("Pakkaus onnistui.");
     }
 

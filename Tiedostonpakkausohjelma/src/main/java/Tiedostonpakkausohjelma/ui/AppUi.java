@@ -69,9 +69,11 @@ public class AppUi {
     void compressHuffman() throws IOException {
         System.out.println("Anna pakattavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki ");
         file = new File(scanner.nextLine());
+        System.out.println("Anna nimi, jolla pakattu tiedosto tallennetaan. ");
+        String name = new String(scanner.nextLine());
         long startTime = System.currentTimeMillis();
         filereader = new FileHandler(file);
-        Huffman huffman = new Huffman(filereader);
+        Huffman huffman = new Huffman(filereader, name);
         try {
             huffman.startHuffman();
             long endTime = System.currentTimeMillis() - startTime;
@@ -95,10 +97,12 @@ public class AppUi {
     void decompressHuffman() throws IOException {
         System.out.println("Anna purettavan tiedoston osoite niin, että \\-merkin tilalla on /-merkki ");
         String text = scanner.nextLine();
+        System.out.println("Anna puretun tiedoston nimi.");
+        String name = scanner.nextLine();
         long startTime = System.currentTimeMillis();
         file = new File(text);
         filereader = new FileHandler(file);
-        DecompressHuffman decompress = new DecompressHuffman(text, filereader);
+        DecompressHuffman decompress = new DecompressHuffman(text, filereader, name);
         try {
             decompress.decompress();
             long endTime = System.currentTimeMillis() - startTime;

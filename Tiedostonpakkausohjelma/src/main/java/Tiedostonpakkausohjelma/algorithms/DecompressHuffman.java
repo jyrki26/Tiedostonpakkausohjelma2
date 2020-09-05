@@ -12,15 +12,17 @@ public class DecompressHuffman {
 
     FileHandler filehandler;
     String file;
+    String name;
     Node first = new Node(0, '\u0238');
     int next = 0;
     String convertedToBytes;
     BinaryConverter bc;
     String saveToFile;
 
-    public DecompressHuffman(String file, FileHandler filehandler) {
+    public DecompressHuffman(String file, FileHandler filehandler, String name) {
         this.filehandler = filehandler;
         this.file = file;
+        this.name = name;
         bc = new BinaryConverter();
 
     }
@@ -35,7 +37,7 @@ public class DecompressHuffman {
         String str[] = s.split("22", 2);
         first = buildTree(str[0], next);
         saveToFile = recreateText(str[1]);
-        filehandler.writeToFile(saveToFile, "purettu.txt");
+        filehandler.writeToFile(saveToFile, name);
     }
 
     /**
